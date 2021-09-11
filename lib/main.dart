@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:mybn/responsive.dart';
 
 import 'navBar.dart';
 
@@ -42,7 +43,12 @@ class LoginPage extends StatelessWidget {
                     child: Image.asset("assets/img/LOGO.png"),
                   ),
                   Spacer(),
-                  NavBar(),
+                  if (!isMobile(context)) NavBar(),
+                  if (isMobile(context))
+                    IconButton(
+                        icon: Icon(Icons.menu),
+                        color: Colors.white,
+                        onPressed: () {})
                   // Spacer(),
                 ],
               ),
@@ -57,38 +63,51 @@ class LoginPage extends StatelessWidget {
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Container(
-          margin: EdgeInsets.all(height * 0.15),
-          width: width * 0.8,
-          height: height * 0.8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.transparent,
-          ),
-          child: Row(children: [
-            Positioned(
-                right: width * 0.4,
-                child: Column(
-                  children: [
-                    ImageMouv(),
-                  ],
-                )),
-            SizedBox(height: height * 0.1),
-            Padding(
-                padding: EdgeInsets.only(
-                  left: width * 0.1,
-                  top: height * 0.1,
-                ),
-                child: Container(
-                  width: width * 0.2,
+    return (!isMobile(context)) ? Container(
+        margin: EdgeInsets.only(left:width*0.15,top:height*0.15),
+        /*width: width * 0.5,
+        height: height * 0.5,*/
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.transparent,
+        ),
+        child: 
+             Row(children: [
+                Positioned(
+                    right: width * 0.4,
+                    child: Column(
+                      children: [
+                        ImageMouv(),
+                      ],
+                    )),
+                
+                Padding(
+                    padding: EdgeInsets.only(
+                      left: width * 0.1,
+                      top: height * 0.1,
+                    ),
+                    child: Container(
+                      width: width * 0.2,
+                      child: _loginForm(),
+                    ))
+              ]))
+            : Container(
+            margin:EdgeInsets.only(left:width*0.15,right:width*0.15),
+            child:Column(children: [
+                Image.asset('assets/img/login.png',
+                    width: width * 0.8, height: height * 0.5),
+                //SizedBox(height: height * 0.1),
+                Container(
+                height: height * 0.5,
+                  width: width * 0.8,
                   child: _loginForm(),
-                ))
-          ])),
-      /*Padding(
+                )
+              ])
+            );
+             
+    /*Padding(
           padding: EdgeInsets.only(left: width * 0.4, bottom: height * 0.8),
           child: )*/
-    ]);
   }
 }
 
@@ -157,7 +176,7 @@ Widget _loginForm() => Column(children: [
       TextField(
           decoration: InputDecoration(
         hintText: 'Mot de passe',
-        counterText: 'Mot de passe oublié',
+        counterText: 'Mot de passe oublié ?',
         suffixIcon: Icon(Icons.visibility_off_outlined, color: Colors.teal),
         fillColor: Colors.blueGrey[50],
         filled: true,
@@ -175,13 +194,14 @@ Widget _loginForm() => Column(children: [
       ),
       Container(
           decoration: BoxDecoration(
-              color: Colors.white,
+          
+              color: Colors.transparent,
               borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey,
-                  spreadRadius: 10,
-                  blurRadius: 20,
+                  spreadRadius: 5,
+                  blurRadius: 15,
                 )
               ]),
           child: ElevatedButton(
