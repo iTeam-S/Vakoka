@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:mybn/responsive.dart';
-
-import 'navBar.dart';
+import 'package:mybn/views/home.dart';
+import 'package:mybn/views/responsive.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +33,7 @@ class LoginPage extends StatelessWidget {
       children: [
         Container(
             height: height * 0.1,
-            color: Colors.black,
+            color: Colors.white,
             child: SafeArea(
               child: Row(
                 children: [
@@ -42,13 +41,13 @@ class LoginPage extends StatelessWidget {
                     margin: EdgeInsets.all(9.0),
                     child: Image.asset("assets/img/LOGO.png"),
                   ),
-                  Spacer(),
-                  if (!isMobile(context)) NavBar(),
+                  /*Spacer(),
+                  if (!isMobile(context)) Container(),
                   if (isMobile(context))
                     IconButton(
                         icon: Icon(Icons.menu),
-                        color: Colors.white,
-                        onPressed: () {})
+                        color: Colors.black,
+                        onPressed: () {})*/
                   // Spacer(),
                 ],
               ),
@@ -63,48 +62,46 @@ class LoginPage extends StatelessWidget {
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return (!isMobile(context)) ? Container(
-        margin: EdgeInsets.only(left:width*0.15,top:height*0.15),
-        /*width: width * 0.5,
+    return (!isMobile(context))
+        ? Container(
+            margin: EdgeInsets.only(left: width * 0.15, top: height * 0.15),
+            /*width: width * 0.5,
         height: height * 0.5,*/
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.transparent,
-        ),
-        child: 
-             Row(children: [
-                Positioned(
-                    right: width * 0.4,
-                    child: Column(
-                      children: [
-                        ImageMouv(),
-                      ],
-                    )),
-                
-                Padding(
-                    padding: EdgeInsets.only(
-                      left: width * 0.1,
-                      top: height * 0.1,
-                    ),
-                    child: Container(
-                      width: width * 0.2,
-                      child: _loginForm(),
-                    ))
-              ]))
-            : Container(
-            margin:EdgeInsets.only(left:width*0.15,right:width*0.15),
-            child:Column(children: [
-                Image.asset('assets/img/login.png',
-                    width: width * 0.8, height: height * 0.5),
-                //SizedBox(height: height * 0.1),
-                Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.transparent,
+            ),
+            child: Row(children: [
+              Positioned(
+                  right: width * 0.4,
+                  child: Column(
+                    children: [
+                      ImageMouv(),
+                    ],
+                  )),
+              Padding(
+                  padding: EdgeInsets.only(
+                    left: width * 0.1,
+                    top: height * 0.1,
+                  ),
+                  child: Container(
+                    width: width * 0.2,
+                    child: LoginForm(),
+                  ))
+            ]))
+        : Container(
+            margin: EdgeInsets.only(left: width * 0.15, right: width * 0.15),
+            child: Column(children: [
+              Image.asset('assets/img/login.png',
+                  width: width * 0.8, height: height * 0.5),
+              //SizedBox(height: height * 0.1),
+              Container(
                 height: height * 0.5,
-                  width: width * 0.8,
-                  child: _loginForm(),
-                )
-              ])
-            );
-             
+                width: width * 0.8,
+                child: LoginForm(),
+              )
+            ]));
+
     /*Padding(
           padding: EdgeInsets.only(left: width * 0.4, bottom: height * 0.8),
           child: )*/
@@ -155,7 +152,12 @@ class _ImageMouvState extends State<ImageMouv>
   }
 }
 
-Widget _loginForm() => Column(children: [
+class LoginForm extends StatelessWidget {
+  const LoginForm({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
       TextField(
           decoration: InputDecoration(
         hintText: 'email ou numéro télephone',
@@ -194,7 +196,6 @@ Widget _loginForm() => Column(children: [
       ),
       Container(
           decoration: BoxDecoration(
-          
               color: Colors.transparent,
               borderRadius: BorderRadius.circular(30),
               boxShadow: [
@@ -205,7 +206,10 @@ Widget _loginForm() => Column(children: [
                 )
               ]),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+            },
             child: Container(
                 width: double.infinity,
                 child: Center(
@@ -218,3 +222,5 @@ Widget _loginForm() => Column(children: [
                     borderRadius: BorderRadius.circular(30))),
           ))
     ]);
+  }
+}

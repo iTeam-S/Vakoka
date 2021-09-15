@@ -12,3 +12,19 @@ class NavCtrl extends GetxController {
     _indexSelectionee.value = index;
   }
 }
+
+/*
+
+class ListeCateg extends GetxController {
+  RxInt _categSelectionee = 0.obs;
+
+  int get categSelectionee => _categSelectionee.value;
+
+  List<String> get categories => ['Home', 'About', 'Contact', 'Project'];
+
+  void setListeIndex(int index) {
+    _categSelectionee.value = index;
+  }
+}
+
+*/

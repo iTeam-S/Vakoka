@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mybn/controllers.dart';
+import 'package:mybn/controllers/controllers.dart';
 
 class NavBar extends StatelessWidget {
   final NavCtrl _controller = Get.put(NavCtrl());
@@ -63,7 +63,7 @@ class _NavBarItemState extends State<NavBarItem> {
         ),
         child: Text(widget.texte,
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight:
                     widget.siActiver ? FontWeight.w400 : FontWeight.normal)),
       ),
