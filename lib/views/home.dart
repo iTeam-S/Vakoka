@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/widgets.dart';
 import 'package:mybn/Models/data.dart';
 import 'package:mybn/views/doctor_info.dart';
 import 'package:mybn/views/publiPage.dart';
@@ -218,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                   height: 20,
                 ),
                 Container(
-                  height: 250,
+                  height: height * 0.15,
                   child: ListView.builder(
                       itemCount: specialities.length,
                       shrinkWrap: true,
@@ -246,22 +246,77 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 20,
                 ),
-                /*DoctorsTile()*/
-                Container(
-                  height: 400,
-                  child: ListView.builder(
-                      itemCount: lauteurs.length,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return BigCard(
+                /*DoctorsTile()
+
+
+                OrientationBuilder(
+        builder: (context, orientation) {
+          return GridView.count(
+            // Create a grid with 2 columns in portrait mode, or 3 columns in
+            // landscape mode.
+            crossAxisCount: orientation == Orientation.portrait ? 2 : 5,
+            // Generate 100 widgets that display their index in the List.
+            children: List.generate(100, (index) {
+             return CardList(
                           imgAssetPath: lauteurs[index].imgAssetPath,
                           speciality: lauteurs[index].speciality,
                           validite: lauteurs[index].validite,
                           name: lauteurs[index].name,
                         );
-                      }),
+            }),
+          );
+        },
+      ),
+
+
+
+
+
+
+
+                GridView.count(
+  // Create a grid with 2 columns. If you change the scrollDirection to
+  // horizontal, this produces 2 rows.
+  crossAxisCount: ,
+  // Generate 100 widgets that display their index in the List.
+  children: List.generate(100, (index) {
+    return Center(
+      child: Text(
+        imgAssetPath: lauteurs[index].imgAssetPath,
+                          speciality: lauteurs[index].speciality,
+                          validite: lauteurs[index].validite,
+                          name: lauteurs[index].name,
+        style: Theme.of(context).textTheme.headline5,
+      ),
+    );
+  }),
+);
+                
+                */
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.only(left: width * .05),
+                    height: height * .4,
+                    child: OrientationBuilder(
+                      builder: (context, orientation) {
+                        return GridView.count(
+                          // Create a grid with 2 columns in portrait mode, or 3 columns in
+                          // landscape mode.
+                          crossAxisCount:
+                              orientation == Orientation.portrait ? 2 : 5,
+                          // Generate 100 widgets that display their index in the List.
+                          children: List.generate(4, (index) {
+                            return DocWidget(
+                              imgAssetPath: lauteurs[index].imgAssetPath,
+                              speciality: lauteurs[index].speciality,
+                              validite: lauteurs[index].validite,
+                              name: lauteurs[index].name,
+                            );
+                          }),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -308,7 +363,7 @@ class _CategorieTileState extends State<CategorieTile> {
         child: Text(
           widget.categorie,
           style: TextStyle(
-              color: widget.isSelected ? Color(0xffA1A1A1) : Color(0xff008080)),
+              color: widget.isSelected ? Colors.white : Color(0xff008080)),
         ),
       ),
     );
@@ -348,7 +403,10 @@ class SpecialistTile extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: Colors.teal,
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0),
+              ),
             ),
             height: 50,
             width: 150,
@@ -437,5 +495,106 @@ class BigCard extends StatelessWidget {
             ),
           ),
         ));
+  }
+}
+
+class CardList extends StatelessWidget {
+  final String imgAssetPath;
+  final String speciality;
+  final bool validite;
+  final String name;
+
+  const CardList(
+      {Key? key,
+      required this.imgAssetPath,
+      required this.speciality,
+      required this.validite,
+      required this.name})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DoctorsInfo()));
+      },
+      child: Card(
+        elevation: 8.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: height * .1,
+              width: width,
+              child: Image(image: AssetImage(imgAssetPath), fit: BoxFit.cover),
+            ),
+            Container(
+                height: height * .03,
+                child: ListTile(
+                  title: Text(name),
+                  subtitle: Text(speciality),
+                )),
+          ],
+          //flex: 8,
+        ),
+      ),
+    );
+  }
+}
+
+class DocWidget extends StatelessWidget {
+  final String imgAssetPath;
+  final String speciality;
+  final bool validite;
+  final String name;
+
+  const DocWidget(
+      {Key? key,
+      required this.imgAssetPath,
+      required this.speciality,
+      required this.validite,
+      required this.name})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DoctorsInfo()));
+      },
+      child: Card(
+          elevation: 8.0,
+          child: Container(
+            height: height * .1,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: ExactAssetImage(imgAssetPath),
+                fit: BoxFit.cover,
+              ),
+            ),
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.teal,
+              ),
+              height: height * .2,
+              width: width * .30,
+              child: Row(
+                children: [
+                  SizedBox(height: height * 0.5),
+                  if (validite)
+                    Icon(Icons.check_circle)
+                  else
+                    Icon(Icons.unpublished),
+                  Text(
+                    speciality,
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ],
+              ),
+            ),
+          )),
+    );
   }
 }

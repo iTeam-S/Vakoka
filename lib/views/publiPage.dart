@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybn/Models/data.dart';
 
 late double width, height;
 
@@ -10,10 +11,10 @@ class PubliPage extends StatelessWidget {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-      /*appBar: AppBar(
+      appBar: AppBar(
         leading: Icon(Icons.arrow_back),
         title: Text("Zavaboary"),
-      ),*/
+      ),
       body: Stack(
         children: [
           Container(
@@ -28,7 +29,7 @@ class PubliPage extends StatelessWidget {
           Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: height * .5,
+                height: height * .4,
                 width: width,
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -53,19 +54,28 @@ class PubliPage extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Expanded(
-                            child: Text("Fandraoka",
-                                style: TextStyle(
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                )),
-                          ),
                           MaterialButton(
                               onPressed: () {},
                               shape: CircleBorder(),
-                              child: Icon(Icons.favorite_border,
-                                  size: 30, color: Colors.teal))
+                              child: Icon(Icons.arrow_upward_outlined,
+                                  size: 30, color: Colors.blue)),
+                          Text("5"),
+                          MaterialButton(
+                              onPressed: () {},
+                              shape: CircleBorder(),
+                              child: Icon(Icons.arrow_downward_outlined,
+                                  size: 30, color: Colors.red)),
+                          Container(
+                              child: Row(children: [
+                            CircleAvatar(
+                              backgroundImage: AssetImage("assets/img/doc.png"),
+                            ),
+                            SizedBox(),
+                            Text("Rakotosoa",
+                                style: TextStyle(
+                                    fontSize: width * 0.045,
+                                    fontWeight: FontWeight.bold))
+                          ]))
                         ],
                       ),
                     ),
@@ -76,25 +86,12 @@ class PubliPage extends StatelessWidget {
                         right: 30,
                       ),
                       child: Flexible(
-                        child: Text("data"),
+                        child: Text(lorem, overflow: TextOverflow.fade),
                       ),
                     )
                   ],
                 ),
               )),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MaterialButton(
-                  onPressed: () {},
-                  shape: CircleBorder(),
-                  child: Icon(Icons.favorite, size: 30, color: Colors.teal)),
-              MaterialButton(
-                  onPressed: () {},
-                  shape: CircleBorder(),
-                  child: Icon(Icons.favorite, size: 30, color: Colors.teal))
-            ],
-          )
         ],
       ),
     );

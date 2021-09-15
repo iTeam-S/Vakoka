@@ -9,7 +9,7 @@ List<SpecialityModel> getSpeciality() {
 
   //1
   specialityModel.noOfDoctors = 5;
-  specialityModel.speciality = "Medecine Traditionnel";
+  specialityModel.speciality = "Medecine";
   specialityModel.imgAssetPath = "assets/img/pervenche.jpg";
   specialityModel.backgroundColor = Color(0xffFBB97C);
   specialities.add(specialityModel);
@@ -41,7 +41,7 @@ List<AuteurModel> getAuteur() {
 
   //1
   auteurModel.validite = false;
-  auteurModel.speciality = "Ody gasy,Culturisme,Biby, Ravinkazo";
+  auteurModel.speciality = "Ody gasy, Ravinkazo";
   auteurModel.imgAssetPath = "assets/img/doc.png";
   auteurModel.name = "Soa Lahy";
   lauteurs.add(auteurModel);
@@ -49,7 +49,7 @@ List<AuteurModel> getAuteur() {
 
   //2
   auteurModel.validite = true;
-  auteurModel.speciality = "Ody gasy,Culturisme,Biby, Ravinkazo";
+  auteurModel.speciality = "Ody gasy,Ravinkazo";
   auteurModel.imgAssetPath = "assets/img/doc.png";
   auteurModel.name = "Rabe San";
   lauteurs.add(auteurModel);
@@ -57,19 +57,23 @@ List<AuteurModel> getAuteur() {
 
   //3
   auteurModel.validite = true;
-  auteurModel.speciality = "Ody gasy,Culturisme,Biby, Ravinkazo";
+  auteurModel.speciality = "Ody gasy, Ravinkazo";
   auteurModel.imgAssetPath = "assets/img/doc.png";
-  auteurModel.name = "Rabe Kot";
+  auteurModel.name = "Rabe Koto";
   lauteurs.add(auteurModel);
   auteurModel = new AuteurModel();
 
   //4
   auteurModel.validite = false;
-  auteurModel.speciality = "Ody gasy,Culturisme,Biby, Ravinkazo";
+  auteurModel.speciality = "Ody gasy, Ravinkazo";
   auteurModel.imgAssetPath = "assets/img/img1.png";
-  auteurModel.name = "Rabe";
+  auteurModel.name = "Rabe Marcellin";
   lauteurs.add(auteurModel);
   auteurModel = new AuteurModel();
 
   return lauteurs;
 }
+
+const String titre = "Part 1";
+const String lorem =
+    "Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy";
