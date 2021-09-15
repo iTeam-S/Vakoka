@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:mybn/home.dart';
-import 'package:mybn/responsive.dart';
+import 'package:mybn/views/home.dart';
+import 'package:mybn/views/responsive.dart';
 
 void main() {
   runApp(MyApp());
