@@ -5,3 +5,13 @@ content-type: application/json
     "mail": "arleme.dev7@gmail.com",
     "password": "12345"
 }
+
+# POST http://0.0.0.0:4444/api/v1/vote/
+# content-type: application/json
+
+# {
+#     "user_id": 2,
+#     "plus_moins": 0,
+#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws",
+#     "",
+# }

@@ -59,7 +59,7 @@ def login():
     mdp = data.get("password")
 
     cursor.execute(""" 
-        SELECT id, compte FROM Users WHERE email = %s AND mdp = %s
+        SELECT id, compte, nom, prenom FROM Users WHERE email = %s AND mdp = %s
     """, (email, mdp)
     )
 
@@ -72,7 +72,8 @@ def login():
         return jsonify({
             'token' : token,
             'id': user_data[0],
-            'admin': str(user_data[1])
+            'admin': str(user_data[1]),
+            'nom': user_data[2]+" "+user_data[3]
         }), 200
     else:
         return jsonify({'status': 'incorrect_pass',}), 403
@@ -83,10 +84,8 @@ def insert_content():
     """
         DESC : Fonction permettant enregistrer un nouveau contenu'
     """
-    data = request.get_json()
+    # data = request.get_json()
     data = request.form
-
-    print(data)
 
     db = mysql.connector.connect(**database())
     cursor = db.cursor()
@@ -100,7 +99,8 @@ def insert_content():
     content = {
         'title' : data.get("title"),
         'description' : data.get("description"),
-        'text' : data.get("text")
+        'text' : data.get("text"),
+        'category' : data.get("category")
     }
 
     # Upload files if exists
@@ -112,15 +112,16 @@ def insert_content():
             filename = str(time.time()) + '_' + secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            file_list = filename if ';' not in file_list else file_list + ';' + filename
+            file_list = filename + ';' if ';' not in file_list else  file_list + filename + ';'
+            print(file_list)
 
 
     db = mysql.connector.connect(**database())
     cursor = db.cursor()
 
     cursor.execute("""
-            INSERT INTO Contenu(title, description, text, user_id, files) VALUES(%s, %s, %s, %s, %s)
-        """,(content['title'], content['description'], content['text'], user_id, file_list)
+            INSERT INTO Contenu(title, description, text, user_id, files, category) VALUES(%s, %s, %s, %s, %s, %s)
+        """,(content['title'], content['description'], content['text'], user_id, file_list[:-1], content['category'])
     )
 
     db.commit()
@@ -128,5 +129,6 @@ def insert_content():
 
     return jsonify({'status': 'content_created'}), 201
 
+
 if __name__=="__main__":
-	app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4444)), debug=True)
+    app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4444)), debug=True)
