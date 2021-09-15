@@ -15,7 +15,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> categories = ["All", "Biby", "Ravinkazo", "Ody gasy"];
+  List<String> categories = [
+    "All",
+    "Biby",
+    "Ravinkazo",
+    "Ody gasy",
+    "Biby",
+    "Ravinkazo",
+    "Ody gasy"
+  ];
 
   late List<SpecialityModel> specialities;
   late List<AuteurModel> lauteurs;

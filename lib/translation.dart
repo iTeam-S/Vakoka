@@ -14,5 +14,7 @@ var translate = {
     'fr': 'connecter',
     'en': 'connect',
     'mg': 'Hiditra',
-  }
+  },
+  'erreur_produite': {},
+  'erreur': {}
 };
