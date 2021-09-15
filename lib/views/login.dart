@@ -125,15 +125,8 @@ class _ImageMouvState extends State<ImageMouv>
         position: _animation,
         child: Column(
           children: [
-            Text(
-              'Veillez vous connecté ici!',
-              style: TextStyle(
-                fontSize: width * 0.025,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Image.asset('assets/img/login.png',
-                width: width * 0.4, height: height * 0.5)
+            SvgPicture.asset('assets/img/login_mobile.svg',
+                width: width * 0.8, height: height * 0.5),
           ],
         ));
   }
