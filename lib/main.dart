@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
     Widget verif() {
       if (box.hasData('user')) {
         Map usrTmp = box.read('user');
-        print(usrTmp);
         appController.user = User(
+          email: usrTmp['email'],
           nom: usrTmp['nom'],
           admin: usrTmp['admin'],
           id: usrTmp['id'],

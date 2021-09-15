@@ -1,4 +1,4 @@
-var translate = {
+var data = {
   'bienvenue': {'fr': 'Bienvenue', 'en': 'Welcome', 'mg': 'Tongasoa'},
   'incorrect_pass': {
     'fr': 'Mot de passe ou Nom d\'utilisateur incorrecte',
@@ -15,6 +15,16 @@ var translate = {
     'en': 'connect',
     'mg': 'Hiditra',
   },
-  'erreur_produite': {},
-  'erreur': {}
+  'erreur_produite': {'fr': 'Une erreur s\'est produite.'},
+  'erreur': {'fr': 'Erreur'},
+  'deconnexion': {'fr': 'Déconnexion'},
+  'carte': {'fr': 'Carte'}
 };
+
+String translate(String cle, String lang) {
+  String? tmp = data[cle]![lang];
+  if (tmp == null)
+    return cle;
+  else
+    return tmp;
+}
