@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:mybn/Models/data.dart';
+import 'package:mybn/models/data.dart';
 import 'package:mybn/views/doctor_info.dart';
 import 'package:mybn/views/publiPage.dart';
-import 'package:mybn/Models/speciality.dart';
+import 'package:mybn/models/speciality.dart';
 import 'package:mybn/views/responsive.dart';
 
 String selectedCategorie = "Adults";
