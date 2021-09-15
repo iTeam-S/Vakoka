@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:mybn/controllers/app.dart';
 import 'package:mybn/views/navBar.dart';
@@ -78,7 +79,7 @@ class Login extends StatelessWidget {
         : Container(
             margin: EdgeInsets.only(left: width * 0.15, right: width * 0.15),
             child: Column(children: [
-              Image.asset('assets/img/login.png',
+              SvgPicture.asset('assets/img/login_mobile.svg',
                   width: width * 0.8, height: height * 0.5),
               //SizedBox(height: height * 0.1),
               Container(
@@ -145,6 +146,11 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Form(
         child: Column(children: [
+      Text('TONGASOA !',
+          style: TextStyle(
+              color: Colors.teal,
+              fontSize: width * 0.020,
+              fontWeight: FontWeight.bold)),
       TextField(
           controller: appController.emailController,
           decoration: InputDecoration(

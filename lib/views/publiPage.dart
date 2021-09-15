@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mybn/Models/data.dart';
+import 'package:mybn/models/data.dart';
 
 late double width, height;
 
