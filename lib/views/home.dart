@@ -1,10 +1,17 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mybn/Models/data.dart';
+import 'package:mybn/models/data.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:mybn/controllers/app.dart';
+import 'package:mybn/controllers/upload.dart';
+import 'package:mybn/translation.dart';
 import 'package:mybn/views/doctor_info.dart';
 import 'package:mybn/views/publiPage.dart';
-import 'package:mybn/Models/speciality.dart';
+import 'package:mybn/models/speciality.dart';
 import 'package:mybn/views/responsive.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 String selectedCategorie = "Adults";
 late double width, height;
@@ -16,17 +23,235 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> categories = ["All", "Biby", "Ravinkazo", "Ody gasy"];
-
+  final AppController appController = Get.put(AppController());
+  final UploadController uploadController = Get.put(UploadController());
   late List<SpecialityModel> specialities;
   late List<AuteurModel> lauteurs;
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
+  bool isLoadingPath = false;
+
+  void onFocusChange() {
+    debugPrint("Focus: " + appController.focus.hasFocus.toString());
+    if (appController.focus.hasFocus) _openFileExplorer();
+  }
+
+  dynamic _openFileExplorer() async {
+    setState(() => isLoadingPath = true);
+    try {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.any);
+      if (result != null) {
+        print('ato va?');
+        PlatformFile file = result.files.first;
+        uploadController.filepath = file.path.toString();
+        uploadController.filetitre.text = file.name;
+      } else {
+        print("Annuler");
+      }
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+  }
+
   @override
   void initState() {
     // ignore: todo
     // TODO: implement initState
     super.initState();
+    appController.focus.addListener(onFocusChange);
 
     specialities = getSpeciality();
     lauteurs = getAuteur();
+  }
+
+  void addVideo(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => SimpleDialog(
+              title: Text(
+                "Ajout d'un Document",
+              ),
+              children: [
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.06,
+                        vertical: MediaQuery.of(context).size.height * 0.0113),
+                    child: TextField(
+                      controller: uploadController.titre,
+                      style: TextStyle(fontSize: 13, color: Colors.grey[800]),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.teal[60],
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none),
+                        focusedBorder: UnderlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none),
+                        hintText: "Titre",
+                        prefixIcon: Icon(Icons.edit, color: Colors.teal),
+                      ),
+                    )),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.06,
+                        vertical: MediaQuery.of(context).size.height * 0.0113),
+                    child: TextField(
+                      controller: uploadController.description,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1, //Normal textInputField will be displayed
+                      maxLines: null, // when
+                      style: TextStyle(fontSize: 13, color: Colors.grey[800]),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.teal[60],
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none),
+                        focusedBorder: UnderlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none),
+                        hintText: "Description",
+                        prefixIcon: Icon(Icons.edit, color: Colors.teal),
+                      ),
+                    )),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.06,
+                        vertical: MediaQuery.of(context).size.height * 0.0113),
+                    child: TextField(
+                      controller: uploadController.texte,
+                      style: TextStyle(fontSize: 13, color: Colors.grey[800]),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.teal[60],
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none),
+                        focusedBorder: UnderlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none),
+                        hintText: "Texte",
+                        prefixIcon: Icon(Icons.edit, color: Colors.teal),
+                      ),
+                    )),
+                Container(
+                    color: Colors.teal[60],
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    width: MediaQuery.of(context).size.height * 0.5,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.09,
+                      // vertical: MediaQuery.of(context).size.height*0.0110,
+                    ),
+                    child: DropdownButton(
+                      isExpanded: true,
+                      value: uploadController.regionChoix,
+                      icon: Icon(Icons.arrow_drop_down_circle),
+                      iconEnabledColor: Colors.teal[700],
+                      iconSize: 25,
+                      underline: SizedBox(),
+                      hint: Text(uploadController.regionChoix,
+                          style: TextStyle(fontSize: 14)),
+                      items: [
+                        for (String mod in uploadController.regions)
+                          DropdownMenuItem(
+                            child: Text(mod),
+                            value: mod,
+                          ),
+                      ],
+                      onChanged: (value) {
+                        uploadController.regionChoix = value.toString();
+                        //dataController.forceUpdate();
+                        Navigator.pop(context);
+                        addVideo(context);
+                      },
+                    )),
+                Container(
+                    color: Colors.teal[60],
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    width: MediaQuery.of(context).size.height * 0.5,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.09,
+                      // vertical: MediaQuery.of(context).size.height*0.0110,
+                    ),
+                    child: DropdownButton(
+                      isExpanded: true,
+                      value: uploadController.categorie,
+                      icon: Icon(Icons.arrow_drop_down_circle),
+                      iconEnabledColor: Colors.teal[700],
+                      iconSize: 25,
+                      underline: SizedBox(),
+                      hint: Text(uploadController.categorie,
+                          style: TextStyle(fontSize: 14)),
+                      items: [
+                        DropdownMenuItem(
+                            child: Text('Catégories'), value: 'Catégories'),
+                        DropdownMenuItem(child: Text('Biby'), value: 'Biby'),
+                        DropdownMenuItem(child: Text('Ody'), value: 'Ody'),
+                      ],
+                      onChanged: (value) {
+                        uploadController.categorie = value.toString();
+                        //dataController.forceUpdate();
+                        Navigator.pop(context);
+                        addVideo(context);
+                      },
+                    )),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.06,
+                      // vertical: MediaQuery.of(context).size.height*0.0110
+                    ),
+                    child: TextField(
+                      controller: uploadController.filetitre,
+                      focusNode: appController.focus,
+                      style: TextStyle(fontSize: 13, color: Colors.grey[800]),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.teal[60],
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none),
+                        focusedBorder: UnderlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none),
+                        hintText: "Fichier",
+                        prefixIcon:
+                            Icon(Icons.file_copy_outlined, color: Colors.teal),
+                      ),
+                    )),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.06,
+                    // vertical:MediaQuery.of(context).size.height*0.01
+                  ),
+                  child: RoundedLoadingButton(
+                    onPressed: () {
+                      appController.process(_btnController);
+                    },
+                    color: Colors.teal,
+                    successColor: Colors.teal[600],
+                    controller: _btnController,
+                    valueColor: Colors.white,
+                    borderRadius: 90,
+                    child:
+                        Text("AJOUTER", style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ],
+            ));
   }
 
   Widget build(BuildContext context) {
@@ -39,44 +264,49 @@ class _HomePageState extends State<HomePage> {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black87),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print('ok');
+          addVideo(context);
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.teal[700],
+        elevation: 10,
+      ),
       drawer: Drawer(
           child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text('Arlème JONSON'),
-            accountEmail: Text('arlemeJ.com@gmail.com'),
-            currentAccountPicture: Image.asset('assets/img/doc.png'),
-            decoration: BoxDecoration(color: Colors.blueAccent),
+            accountName: Text(appController.user.nom),
+            accountEmail: Text(appController.user.email),
+            currentAccountPicture: CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.teal,
+              child: Text(appController.user.email[0].toUpperCase()),
+            ),
+            decoration: BoxDecoration(color: Colors.teal[600]),
           ),
           ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text('Drawer layout Item 1'),
+            leading: Icon(Icons.place_outlined),
+            title: Text(translate('carte', appController.lang)),
             onTap: () {
-              // This line code will close drawer programatically....
-              Navigator.pop(context);
+              // appController.logout();
             },
           ),
           Divider(
             height: 2.0,
           ),
           ListTile(
-            leading: Icon(Icons.accessibility),
-            title: Text('Drawer layout Item 2'),
+            leading: Icon(Icons.logout_outlined),
+            title: Text(translate('deconnexion', appController.lang)),
             onTap: () {
-              Navigator.pop(context);
+              appController.logout();
             },
           ),
           Divider(
             height: 2.0,
           ),
-          ListTile(
-            leading: Icon(Icons.account_box),
-            title: Text('Drawer layout Item 3'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          )
         ],
       ) // Populate the Drawer in the next step.
           ),

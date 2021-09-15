@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:mybn/Models/speciality.dart';
+import 'package:mybn/models/speciality.dart';
 import 'package:flutter/material.dart';
 
 List<SpecialityModel> getSpeciality() {
