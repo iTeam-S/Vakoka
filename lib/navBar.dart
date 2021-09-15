@@ -63,7 +63,7 @@ class _NavBarItemState extends State<NavBarItem> {
         ),
         child: Text(widget.texte,
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight:
                     widget.siActiver ? FontWeight.w400 : FontWeight.normal)),
       ),
