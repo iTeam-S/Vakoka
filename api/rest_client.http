@@ -1,17 +1,62 @@
-POST http://0.0.0.0:4444/api/v1/login/
-content-type: application/json
+# POST http://0.0.0.0:4444/api/v1/login/
+# content-type: application/json
 
-{
-    "mail": "arleme.dev7@gmail.com",
-    "password": "12345"
-}
+# {
+#     "mail": "arleme.dev7@gmail.com",
+#     "password": "12345"
+# }
 
 # POST http://0.0.0.0:4444/api/v1/vote/
 # content-type: application/json
 
 # {
 #     "user_id": 2,
-#     "plus_moins": 0,
+#     "contenu_id": 5,
+#     "plus_moins": 1,
+#     "test": [0, 2, 5, 9],
+#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws"
+# }
+
+# POST http://0.0.0.0:4444/api/v1/add_category/
+# content-type: application/json
+
+# {
+#     "user_id": 2,
+#     "cat_name": "Gouvernance",
+#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws"
+# }
+
+# POST http://0.0.0.0:4444/api/v1/get_content_region/
+# content-type: application/json
+
+# {
+#     "user_id": 2,
 #     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws",
-#     "",
+#     "region": "sofia"
+# }
+
+# POST http://0.0.0.0:4444/api/v1/get_content_category/
+# content-type: application/json
+
+# {
+#     "user_id": 2,
+#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws",
+#     "category_id": "1"
+# }
+
+# POST http://0.0.0.0:4444/api/v1/get_content_category/
+# content-type: application/json
+
+# {
+#     "user_id": 2,
+#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws",
+#     "category_id": "1"
+# }
+
+# POST http://0.0.0.0:4444/api/v1/get_content/
+# content-type: application/json
+
+# {
+#     "user_id": 2,
+#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws"
 # }
