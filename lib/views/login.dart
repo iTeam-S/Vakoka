@@ -138,7 +138,7 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Form(
         child: Column(children: [
-      Text('TONGASOA !',
+      Text(translate('Tongasoa', appController.lang),
           style: TextStyle(
               color: Colors.teal,
               fontSize: width * 0.020,
@@ -146,7 +146,7 @@ class LoginForm extends StatelessWidget {
       TextField(
           controller: appController.emailController,
           decoration: InputDecoration(
-            hintText: 'email ou numéro télephone',
+            hintText: translate('Email ou Numéro de téléphone', appController.lang),
             fillColor: Colors.blueGrey[50],
             filled: true,
             labelStyle: TextStyle(fontSize: 12),
@@ -165,8 +165,8 @@ class LoginForm extends StatelessWidget {
           controller: appController.passwordController,
           obscureText: true,
           decoration: InputDecoration(
-            hintText: 'Mot de passe',
-            counterText: 'Mot de passe oublié ?',
+            hintText: translate('Mot de passe', appController.lang),
+            counterText: translate('Mot de passe oublié ?', appController.lang),
             suffixIcon: Icon(Icons.visibility_off_outlined, color: Colors.teal),
             fillColor: Colors.blueGrey[50],
             filled: true,
@@ -201,7 +201,7 @@ class LoginForm extends StatelessWidget {
             child: Container(
                 width: double.infinity,
                 child: Center(
-                  child: Text('se connecter'),
+                  child: Text(translate('se connecter', appController.lang)),
                 )),
           ))
     ]));
