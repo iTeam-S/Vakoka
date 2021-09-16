@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (BuildContext context) => SimpleDialog(
               title: Text(
-                translate("Ajout d'un document", appController.lang),
+                translate("Ajout_d_un_document", appController.lang),
               ),
               children: [
                 Container(
@@ -196,8 +196,8 @@ class _HomePageState extends State<HomePage> {
                       items: [
                         DropdownMenuItem(
                             child: Text(
-                                translate('Catégorie', appController.lang)),
-                            value: translate('catégorie', appController.lang)),
+                                translate('Categorie', appController.lang)),
+                            value: translate('Categorie', appController.lang)),
                         DropdownMenuItem(
                             child: Text(translate('Biby', appController.lang)),
                             value: translate('Biby', appController.lang)),
