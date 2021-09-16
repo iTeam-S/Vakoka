@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'MYBN',
+        title: 'Vakoka',
         theme: ThemeData(
           primarySwatch: Colors.teal,
         ),

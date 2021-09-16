@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:city_picker_from_map/city_picker_from_map.dart';
 import 'package:get/get.dart';
+import 'package:mybn/views/home.dart';
 
 class CarteView extends StatefulWidget {
   @override
@@ -37,12 +40,23 @@ class _CarteView extends State<CarteView> {
               constrained: true,
               child: CityPickerMap(
                 key: _mapKey,
-                width: Get.width,
+                width: double.infinity,
                 height: double.infinity,
                 map: Maps.MADAGASCAR,
                 onChanged: (city) {
                   setState(() {
                     selectedCity = city;
+                  });
+                  Get.snackbar('Redirection',
+                      'Recherche pour la région de ${selectedCity?.title.toString()}');
+
+                  Timer(Duration(seconds: 2), () {
+                    appController.selectedCategorie =
+                        '_REGION_' + selectedCity!.title.toString();
+                    appController.update();
+                    Get.toNamed(
+                      '/home',
+                    );
                   });
                 },
                 actAsToggle: true,
