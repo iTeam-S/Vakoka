@@ -13,6 +13,7 @@ class AppController extends GetxController {
   final ApiController apiController = Get.put(ApiController());
   final UploadController uploadController = Get.put(UploadController());
   final box = GetStorage();
+  late Contenue currentContenue;
   // ************* LOGIN *********************
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();

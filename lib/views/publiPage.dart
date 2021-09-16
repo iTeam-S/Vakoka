@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mybn/controllers/app.dart';
 
 late double width, height;
+final AppController appController = Get.put(AppController());
 
 class PubliPage extends StatelessWidget {
   const PubliPage({Key? key}) : super(key: key);
@@ -12,8 +15,13 @@ class PubliPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back),
-        title: Text("Zavaboary"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        title: Text("Details"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -59,39 +67,45 @@ class PubliPage extends StatelessWidget {
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.symmetric(horizontal: 15),
                                 decoration: BoxDecoration(
-                                    color: Colors.teal[300],
                                     borderRadius: BorderRadius.circular(30)),
                                 child: Row(
                                     mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Icon(Icons.check_circle,
-                                          color: Colors.white),
+                                      if (appController
+                                          .currentContenue.user.officiel)
+                                        Icon(Icons.check_circle,
+                                            color: Colors.teal),
                                       Text(
-                                        'Rakoto',
+                                        appController.currentContenue.user.nom,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                            color: Colors.teal[600]),
                                       )
                                     ])),
                             Container(
                               height: height * .04,
                               padding: EdgeInsets.symmetric(horizontal: 15),
                               decoration: BoxDecoration(
-                                  color: Colors.teal[300],
                                   borderRadius: BorderRadius.circular(30)),
                               child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
-                                      Icons.picture_as_pdf,
-                                      color: Colors.white,
-                                    ),
-                                    Text('Download',
+                                    if (appController.currentContenue.files !=
+                                        '')
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.download_for_offline,
+                                            color: Colors.teal,
+                                          )),
+                                    Text(appController.currentContenue.files,
                                         style: TextStyle(
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white))
+                                            color: Colors.teal))
                                   ]),
                             )
                           ],
@@ -108,14 +122,15 @@ class PubliPage extends StatelessWidget {
                           child: Column(
                             children: [
                               ListTile(
-                                title: Text('Morengy',
+                                title: Text(appController.currentContenue.titre,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
                                 subtitle: Text(
-                                    "Le Morengy est un sport dangereux pratiquer par les malagasy"),
+                                    appController.currentContenue.description),
                               ),
                               Divider(height: 5),
-                              Text('lorem', overflow: TextOverflow.fade)
+                              Text(appController.currentContenue.texte,
+                                  overflow: TextOverflow.fade)
                             ],
                           ),
                         ),
