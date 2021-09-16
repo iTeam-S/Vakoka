@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mybn/controllers/api.dart';
 import 'package:mybn/controllers/upload.dart';
+import 'package:mybn/models/contenue.dart';
 import 'package:mybn/models/users.dart';
 import 'package:mybn/translation.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -18,6 +19,7 @@ class AppController extends GetxController {
   // Utilisateur
   late User user;
   String lang = 'fr';
+  List<Categorie> data = <Categorie>[];
 
 // Uploader les fic
   FocusNode focus = FocusNode();
@@ -160,6 +162,47 @@ class AppController extends GetxController {
       );
       return false;
     }
+  }
+
+  void init() async {
+    var res = await apiController.getcontent(user.id, user.token);
+    if (res[0]) {
+      data.clear();
+      for (Map cat in res[1]) {
+        List<Contenue> contTmp = <Contenue>[];
+        for (Map cont in cat['contents'])
+          contTmp.add(Contenue(
+              cont['id'],
+              cont['title'],
+              cont['description'],
+              cont['text'],
+              Profile(cont['nom'], cont['user_badge'] == 1 ? true : false),
+              cont['badge'] == 1 ? true : false,
+              cont['files'],
+              cont['region']));
+        Categorie catTmp = Categorie(cat['cat_id'], cat['cat_name'], contTmp);
+        data.add(catTmp);
+      }
+    }
+    update();
+  }
+
+  List<String> getCategories() {
+    List<String> res = <String>['Tous'];
+    for (Categorie cat in data) res.add(cat.nom);
+
+    return res;
+  }
+
+  List<Contenue> getContenues(String selectedCategorie) {
+    List<Contenue> res = [];
+    for (Categorie cat in data)
+      if (selectedCategorie == cat.nom)
+        return cat.contenues;
+      else if (selectedCategorie == 'Tous')
+        for (Contenue cont in cat.contenues) res.add(cont);
+
+    return res;
   }
 
   // *****************************************

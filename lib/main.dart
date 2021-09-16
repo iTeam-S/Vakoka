@@ -6,6 +6,7 @@ import 'package:mybn/controllers/app.dart';
 import 'package:mybn/models/users.dart';
 import 'package:mybn/views/home.dart';
 import 'package:mybn/views/login.dart';
+import 'package:mybn/views/carte.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => verif(),
           '/login': (context) => LoginPage(),
           '/home': (context) => HomePage(),
+          '/carte': (context) => CarteView()
         });
   }
 }
