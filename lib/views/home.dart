@@ -326,17 +326,15 @@ class _HomePageState extends State<HomePage> {
                   if (!isMobile(context))
                     Row(
                       children: [
-                        Text(
-                          "MYBN",
-                          style: TextStyle(
-                              color: Colors.black87.withOpacity(0.8),
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600),
+                        Image.asset(
+                          'assets/img/logof.png',
+                          width: Get.width * .2,
+                          height: Get.height * .2,
                         ),
                         Spacer(),
                         Container(
                             padding: EdgeInsets.symmetric(horizontal: 24),
-                            width: width * 0.25,
+                            width: width * 0.3,
                             height: 50,
                             child: TextField(
                                 decoration: InputDecoration(
@@ -361,15 +359,10 @@ class _HomePageState extends State<HomePage> {
                   if (isMobile(context))
                     Column(
                       children: [
-                        Text(
-                          "MYBN",
-                          style: TextStyle(
-                              color: Colors.black87.withOpacity(0.8),
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: 40,
+                        Image.asset(
+                          'assets/img/logof.png',
+                          width: Get.width * .35,
+                          height: Get.height * .1,
                         ),
                         Container(
                             padding: EdgeInsets.symmetric(horizontal: 20),
