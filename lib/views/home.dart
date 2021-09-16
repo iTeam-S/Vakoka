@@ -36,10 +36,6 @@ class _HomePageState extends State<HomePage> {
     if (appController.focus.hasFocus) _openFileExplorer();
   }
 
-  void onFocusQuery() {
-    print(appController.queryController.text);
-  }
-
   dynamic _openFileExplorer() async {
     setState(() => isLoadingPath = true);
     try {
@@ -362,7 +358,7 @@ class _HomePageState extends State<HomePage> {
                                   height: 50,
                                   child: TextField(
                                       onChanged: (text) {
-                                        print('First text field: $text');
+                                        appController.search(text);
                                       },
                                       controller: appController.queryController,
                                       decoration: InputDecoration(
@@ -484,7 +480,9 @@ class _HomePageState extends State<HomePage> {
                                                 .selectedCategorie))
                                           GestureDetector(
                                             onTap: () {
-                                              print('test');
+                                              appController.currentContenue =
+                                                  contenue;
+                                              Get.toNamed('/page');
                                             },
                                             child: Card(
                                               elevation: 1,
