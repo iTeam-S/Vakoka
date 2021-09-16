@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:mybn/controllers/app.dart';
 import 'package:mybn/controllers/upload.dart';
 import 'package:mybn/translation.dart';
-import 'package:mybn/views/doctor_info.dart';
 import 'package:mybn/views/publiPage.dart';
 import 'package:mybn/models/speciality.dart';
 import 'package:mybn/views/responsive.dart';
@@ -603,7 +602,7 @@ class BigCard extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DoctorsInfo()));
+              context, MaterialPageRoute(builder: (context) => PubliPage()));
         },
         child: Container(
           width: 300,
@@ -670,7 +669,7 @@ class CardList extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DoctorsInfo()));
+            context, MaterialPageRoute(builder: (context) => PubliPage()));
       },
       child: Card(
         elevation: 8.0,
@@ -715,7 +714,7 @@ class DocWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DoctorsInfo()));
+            context, MaterialPageRoute(builder: (context) => PubliPage()));
       },
       child: Card(
           elevation: 8.0,
@@ -743,7 +742,8 @@ class DocWidget extends StatelessWidget {
                     Icon(Icons.unpublished),
                   Text(
                     speciality,
-                    style: TextStyle(color: Colors.white, fontSize: 15),
+                    style:
+                        TextStyle(color: Colors.white, fontSize: width * 0.005),
                   ),
                 ],
               ),
