@@ -315,6 +315,13 @@ class _HomePageState extends State<HomePage> {
             Divider(
               height: 2.0,
             ),
+            ListTile(
+              leading: Icon(Icons.g_translate_sharp),
+              title: Text(translate('Traduire', appController.lang)),
+              onTap: () {
+                appController.logout();
+              },
+            ),
           ],
         ) // Populate the Drawer in the next step.
             ),

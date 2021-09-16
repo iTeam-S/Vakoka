@@ -32,7 +32,7 @@ dependencies:
   get: ^4.3.8
   file_picker: ^3.0.3
   get_storage:
-  backdrop:
+  image_picker: ^0.8.4+1
   dio: ^4.0.0
   rounded_loading_button: ^2.0.5
   city_picker_from_map: ^0.0.1
