@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mybn/models/contenue.dart';
-import 'package:mybn/models/data.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mybn/controllers/app.dart';
@@ -15,8 +14,8 @@ import 'package:mybn/models/speciality.dart';
 import 'package:mybn/views/responsive.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-String selectedCategorie = "Tous";
 late double width, height;
+final AppController appController = Get.put(AppController());
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,7 +23,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final AppController appController = Get.put(AppController());
   final UploadController uploadController = Get.put(UploadController());
   late List<SpecialityModel> specialities;
   late List<AuteurModel> lauteurs;
@@ -35,6 +33,10 @@ class _HomePageState extends State<HomePage> {
   void onFocusChange() {
     debugPrint("Focus: " + appController.focus.hasFocus.toString());
     if (appController.focus.hasFocus) _openFileExplorer();
+  }
+
+  void onFocusQuery() {
+    print(appController.queryController.text);
   }
 
   dynamic _openFileExplorer() async {
@@ -61,8 +63,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     appController.focus.addListener(onFocusChange);
     appController.init();
-    specialities = getSpeciality();
-    lauteurs = getAuteur();
   }
 
   void addDocument(context) {
@@ -257,6 +257,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
+
     return GetBuilder<AppController>(
       builder: (_) => Scaffold(
         appBar: AppBar(
@@ -337,23 +338,27 @@ class _HomePageState extends State<HomePage> {
                             width: width * 0.3,
                             height: 50,
                             child: TextField(
+                                onChanged: (text) {
+                                  print('First text field: $text');
+                                },
+                                controller: appController.queryController,
                                 decoration: InputDecoration(
-                              hintText: 'Recherche',
-                              prefixIcon:
-                                  Icon(Icons.search, color: Colors.teal),
-                              fillColor: Colors.blueGrey[50],
-                              filled: true,
-                              labelStyle: TextStyle(fontSize: 12),
-                              contentPadding: EdgeInsets.only(left: 30),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                      color: Colors.blueGrey.shade50)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                      color: Colors.blueGrey.shade50)),
-                            ))),
+                                  hintText: 'Recherche',
+                                  prefixIcon:
+                                      Icon(Icons.search, color: Colors.teal),
+                                  fillColor: Colors.blueGrey[50],
+                                  filled: true,
+                                  labelStyle: TextStyle(fontSize: 12),
+                                  contentPadding: EdgeInsets.only(left: 30),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueGrey.shade50)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueGrey.shade50)),
+                                ))),
                       ],
                     ),
                   if (isMobile(context))
@@ -369,23 +374,27 @@ class _HomePageState extends State<HomePage> {
                             /*width: width * 0.75, */
                             height: 50,
                             child: TextField(
+                                onChanged: (text) {
+                                  appController.search(text);
+                                },
+                                controller: appController.queryController,
                                 decoration: InputDecoration(
-                              hintText: 'Recherche',
-                              prefixIcon:
-                                  Icon(Icons.search, color: Colors.teal),
-                              fillColor: Colors.blueGrey[50],
-                              filled: true,
-                              labelStyle: TextStyle(fontSize: 12),
-                              contentPadding: EdgeInsets.only(left: 30),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                      color: Colors.blueGrey.shade50)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                      color: Colors.blueGrey.shade50)),
-                            ))),
+                                  hintText: 'Recherche',
+                                  prefixIcon:
+                                      Icon(Icons.search, color: Colors.teal),
+                                  fillColor: Colors.blueGrey[50],
+                                  filled: true,
+                                  labelStyle: TextStyle(fontSize: 12),
+                                  contentPadding: EdgeInsets.only(left: 30),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueGrey.shade50)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueGrey.shade50)),
+                                ))),
                       ],
                     ),
                   SizedBox(
@@ -412,7 +421,7 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             return CategorieTile(
                               categorie: appController.getCategories()[index],
-                              isSelected: selectedCategorie ==
+                              isSelected: appController.selectedCategorie ==
                                   appController.getCategories()[index],
                               context: this,
                               key: null,
@@ -435,8 +444,9 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisCount: isMobile(context) ? 2 : 4,
                                 // Generate 100 widgets that display their index in the List.
                                 children: [
-                                  for (Contenue contenue in appController
-                                      .getContenues(selectedCategorie))
+                                  for (Contenue contenue
+                                      in appController.getContenues(
+                                          appController.selectedCategorie))
                                     GestureDetector(
                                       onTap: () {
                                         print('test');
@@ -560,8 +570,7 @@ class _CategorieTileState extends State<CategorieTile> {
     return GestureDetector(
       onTap: () {
         widget.context.setState(() {
-          selectedCategorie = widget.categorie;
-          print(selectedCategorie);
+          appController.selectedCategorie = widget.categorie;
         });
       },
       child: Container(

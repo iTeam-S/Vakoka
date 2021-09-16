@@ -16,6 +16,8 @@ class AppController extends GetxController {
   // ************* LOGIN *********************
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController queryController = TextEditingController();
+  String selectedCategorie = 'Tous';
   // Utilisateur
   late User user;
   String lang = 'fr';
@@ -201,8 +203,21 @@ class AppController extends GetxController {
         return cat.contenues;
       else if (selectedCategorie == 'Tous')
         for (Contenue cont in cat.contenues) res.add(cont);
+      else if (selectedCategorie == 'search')
+        for (Contenue cont in cat.contenues)
+          if (cont.titre
+                  .toLowerCase()
+                  .contains(queryController.text.toLowerCase()) ||
+              cont.description
+                  .toLowerCase()
+                  .contains(queryController.text.toLowerCase())) res.add(cont);
 
     return res;
+  }
+
+  void search(String text) {
+    selectedCategorie = 'search';
+    update();
   }
 
   // *****************************************
