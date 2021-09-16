@@ -203,7 +203,7 @@ class AppController extends GetxController {
         return cat.contenues;
       else if (selectedCategorie == 'Tous')
         for (Contenue cont in cat.contenues) res.add(cont);
-      else if (selectedCategorie == 'search')
+      else if (selectedCategorie == 'search') {
         for (Contenue cont in cat.contenues)
           if (cont.titre
                   .toLowerCase()
@@ -211,7 +211,12 @@ class AppController extends GetxController {
               cont.description
                   .toLowerCase()
                   .contains(queryController.text.toLowerCase())) res.add(cont);
-
+      } else if (selectedCategorie.contains('_REGION_')) {
+        String region = selectedCategorie.replaceAll('_REGION_', '');
+        for (Contenue cont in cat.contenues) {
+          if (region == cont.region) res.add(cont);
+        }
+      }
     return res;
   }
 
