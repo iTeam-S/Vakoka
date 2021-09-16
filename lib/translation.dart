@@ -27,7 +27,7 @@ var data = {
   },
   'deconnexion': {
     'fr': 'Déconnexion',
-    'en': 'LogOut',
+    'en': 'Logout',
     'mg': 'Hivoaka',
   },
   'carte': {
