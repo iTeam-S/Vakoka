@@ -22,9 +22,9 @@ cursor = db.cursor()
 # Paramêtrage du dossier pour enregistrer les fichiers des contenus
 path = os.getcwd()
 if not os.path.isdir('data'):
-    os.makedirs('data\contents')
+    os.makedirs('data/contents')
 
-UPLOAD_FOLDER = os.path.join(path, 'data\contents')
+UPLOAD_FOLDER = os.path.join(path, 'data/contents')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
@@ -415,4 +415,4 @@ def list_gallery():
     }), 201
 
 if __name__=="__main__":
-    app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4444)), debug=True)
+    app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4445)))
