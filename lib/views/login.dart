@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:mybn/controllers/app.dart';
+import 'package:mybn/translation.dart';
 import 'package:mybn/views/responsive.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
@@ -146,7 +147,8 @@ class LoginForm extends StatelessWidget {
       TextField(
           controller: appController.emailController,
           decoration: InputDecoration(
-            hintText: translate('email_ou_numero_telephone', appController.lang),
+            hintText:
+                translate('email_ou_numero_telephone', appController.lang),
             fillColor: Colors.blueGrey[50],
             filled: true,
             labelStyle: TextStyle(fontSize: 12),

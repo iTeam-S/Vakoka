@@ -26,81 +26,81 @@ var data = {
     'mg': 'Hadisoana',
   },
   'deconnexion': {
-    'fr': 'Déconnexion'
+    'fr': 'Déconnexion',
     'en': 'LogOut',
     'mg': 'Hivoaka',
   },
   'carte': {
-    'fr': 'Carte'
+    'fr': 'Carte',
     'en': 'Maps',
     'mg': 'Sarin-tany',
-  }
+  },
   'Ajout_d_un_document': {
-    'fr': 'Ajouter un document'
+    'fr': 'Ajouter un document',
     'en': 'Add a document',
     'mg': 'Fampidirana tahirin-kevitra',
-  }
-  'Titre': {
-    'fr': 'Titre'
-    'en': 'Title',
-    'mg': 'Lohateny',
-  }
+  },
   'Description': {
-    'fr': 'Déscription'
+    'fr': 'Déscription',
     'en': 'About',
     'mg': 'Mombamomba',
-  }
+  },
   'Texte': {
-    'fr': 'Texte'
+    'fr': 'Texte',
     'en': 'Text',
     'mg': 'Lahatsoratra',
-  }
+  },
   'Titre': {
-    'fr': 'Titre'
+    'fr': 'Titre',
     'en': 'Title',
     'mg': 'Lohateny',
-  }
+  },
   'Categorie': {
-    'fr': 'Catégorie'
+    'fr': 'Catégorie',
     'en': 'Category',
     'mg': 'Sokajy',
-  }
+  },
   'Biby': {
-    'fr': 'Animaux'
+    'fr': 'Animaux',
     'en': 'Animals',
     'mg': 'Biby',
-  }
+  },
   'Fichier': {
-    'fr': 'Fichier'
+    'fr': 'Fichier',
     'en': 'File',
     'mg': 'Rakitra',
-  }
+  },
   'Recherche': {
-    'fr': 'Recherche'
+    'fr': 'Recherche',
     'en': 'Search',
     'mg': 'Tadiavina',
-  }
+  },
   'AJOUTER': {
-    'fr': 'Ajouter'
+    'fr': 'Ajouter',
     'en': 'Add',
     'mg': 'Ampidirina',
-  }
+  },
   'mot_de_passe': {
-    'fr': 'Mot de passe'
+    'fr': 'Mot de passe',
     'en': 'Password',
     'mg': 'Teny miafina',
-  }
+  },
   'mot_de_passe_oublie_?': {
-    'fr': 'Mot de passe oublié ?'
+    'fr': 'Mot de passe oublié ?',
     'en': 'Forgot your password ?',
     'mg': 'Hadinonao ve ny teny miafinao ?',
+  },
+  'camera': {
+    'fr': 'camera',
+    'en': 'camara',
+    'mg': 'fakantsary',
   }
 };
 
 String translate(String cle, String lang) {
-  String? tmp = data[cle]![lang];
+  var tmp = data[cle];
   if (tmp == null)
     return cle;
   else
-    return tmp;
+    return tmp[lang]!;
 }

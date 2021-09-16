@@ -319,9 +319,12 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: Icon(Icons.g_translate_sharp),
               title: Text(translate('Traduire', appController.lang)),
-              onTap: () {
-                appController.logout();
-              },
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.photo_camera),
+              title: Text(translate('capture', appController.lang)),
+              onTap: () {},
             ),
           ],
         ) // Populate the Drawer in the next step.
