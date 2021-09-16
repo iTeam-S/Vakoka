@@ -43,15 +43,7 @@
 #     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws",
 #     "category_id": "1"
 # }
-
-# POST http://0.0.0.0:4444/api/v1/get_content_category/
-# content-type: application/json
-
-# {
-#     "user_id": 2,
-#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws",
-#     "category_id": "1"
-# }
+ 
 
 # POST http://0.0.0.0:4444/api/v1/comment/
 # content-type: application/json
@@ -63,11 +55,10 @@
 #     "text": "C'est enuyant comme document"
 # }
 
-POST http://0.0.0.0:4444/api/v1/get_comments/
+POST http://iteam-s.mg:4443/api/v1/get_content/
 content-type: application/json
 
 {
     "user_id": 2,
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws",
-    "contenu_id": "27"
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws"
 }
