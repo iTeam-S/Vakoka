@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:mybn/controllers/upload.dart';
@@ -70,6 +72,30 @@ class ApiController extends GetxController {
       }
     } catch (e) {
       print("8---: $e");
+      return [false, "Verifier Votre Réseau"];
+    }
+  }
+
+  Future<List> getcontent(int userid, String token) async {
+    try {
+      var response = await client.post(
+        "/api/v1/get_content/",
+        data: {"user_id": userid, "token": token},
+      );
+      return [true, response.data];
+    } on dio.DioError catch (err) {
+      print(err);
+      if (err.response!.statusCode == 403) {
+        Timer(Duration(seconds: 2), () {
+          // Session expiré ==> reconnexion
+          Get.offNamed('/login');
+        });
+        return [false, err.response!.data['status']];
+      } else {
+        return [false, err.response!.data['status']];
+      }
+    } catch (e) {
+      print(e);
       return [false, "Verifier Votre Réseau"];
     }
   }

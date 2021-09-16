@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mybn/models/data.dart';
 
 late double width, height;
 
@@ -116,7 +115,7 @@ class PubliPage extends StatelessWidget {
                                     "Le Morengy est un sport dangereux pratiquer par les malagasy"),
                               ),
                               Divider(height: 5),
-                              Text(lorem, overflow: TextOverflow.fade)
+                              Text('lorem', overflow: TextOverflow.fade)
                             ],
                           ),
                         ),

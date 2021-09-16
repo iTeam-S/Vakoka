@@ -1,7 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mybn/models/data.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:mybn/models/contenue.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mybn/controllers/app.dart';
@@ -12,8 +13,8 @@ import 'package:mybn/models/speciality.dart';
 import 'package:mybn/views/responsive.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-String selectedCategorie = "Adults";
 late double width, height;
+final AppController appController = Get.put(AppController());
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,8 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> categories = ["All", "Biby", "Ravinkazo", "Ody gasy"];
-  final AppController appController = Get.put(AppController());
   final UploadController uploadController = Get.put(UploadController());
   late List<SpecialityModel> specialities;
   late List<AuteurModel> lauteurs;
@@ -35,13 +34,16 @@ class _HomePageState extends State<HomePage> {
     if (appController.focus.hasFocus) _openFileExplorer();
   }
 
+  void onFocusQuery() {
+    print(appController.queryController.text);
+  }
+
   dynamic _openFileExplorer() async {
     setState(() => isLoadingPath = true);
     try {
       FilePickerResult? result =
           await FilePicker.platform.pickFiles(type: FileType.any);
       if (result != null) {
-        print('ato va?');
         PlatformFile file = result.files.first;
         uploadController.filepath = file.path.toString();
         uploadController.filetitre.text = file.name;
@@ -59,12 +61,10 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     appController.focus.addListener(onFocusChange);
-
-    specialities = getSpeciality();
-    lauteurs = getAuteur();
+    appController.init();
   }
 
-  void addVideo(context) {
+  void addDocument(context) {
     showDialog(
         context: context,
         builder: (BuildContext context) => SimpleDialog(
@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                         uploadController.regionChoix = value.toString();
                         //dataController.forceUpdate();
                         Navigator.pop(context);
-                        addVideo(context);
+                        addDocument(context);
                       },
                     )),
                 Container(
@@ -208,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                         uploadController.categorie = value.toString();
                         //dataController.forceUpdate();
                         Navigator.pop(context);
-                        addVideo(context);
+                        addDocument(context);
                       },
                     )),
                 Container(
@@ -262,226 +262,293 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        brightness: Brightness.light,
-        iconTheme: IconThemeData(color: Colors.black87),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('ok');
-          addVideo(context);
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.teal[700],
-        elevation: 10,
-      ),
-      drawer: Drawer(
-          child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text(appController.user.nom),
-            accountEmail: Text(appController.user.email),
-            currentAccountPicture: CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.teal,
-              child: Text(appController.user.email[0].toUpperCase()),
-            ),
-            decoration: BoxDecoration(color: Colors.teal[600]),
-          ),
-          ListTile(
-            leading: Icon(Icons.place_outlined),
-            title: Text(translate('carte', appController.lang)),
-            onTap: () {
-              // appController.logout();
-            },
-          ),
-          Divider(
-            height: 2.0,
-          ),
-          ListTile(
-            leading: Icon(Icons.logout_outlined),
-            title: Text(translate('deconnexion', appController.lang)),
-            onTap: () {
-              appController.logout();
-            },
-          ),
-          Divider(
-            height: 2.0,
-          ),
-        ],
-      ) // Populate the Drawer in the next step.
-          ),
-      body: ListView(children: [
-        /*Container(
-            height: height * 0.1,
-            color: Colors.white,
-            child: SafeArea(
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(9.0),
-                    child: Image.asset("assets/img/LOGO.png"),
-                  ),
-                  Spacer(),
-                  if (!isMobile(context)) NavBar(),
-                  if (isMobile(context))
-                    IconButton(
-                        icon: Icon(Icons.menu),
-                        color: Colors.black,
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        })
-                  // Spacer(),
-                ],
+
+    return GetBuilder<AppController>(
+      builder: (_) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.teal,
+          elevation: 0.0,
+          brightness: Brightness.light,
+          iconTheme: IconThemeData(color: Colors.black87),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            addDocument(context);
+          },
+          child: const Icon(Icons.add),
+          backgroundColor: Colors.teal[700],
+          elevation: 10,
+        ),
+        drawer: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text(appController.user.nom),
+              accountEmail: Text(appController.user.email),
+              currentAccountPicture: CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.teal,
+                child: Text(appController.user.email[0].toUpperCase()),
               ),
-            )),*/
-        SizedBox(),
-        SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
-                if (!isMobile(context))
-                  Row(
-                    children: [
-                      Text(
-                        "MYBN \nVolontaires",
-                        style: TextStyle(
-                            color: Colors.black87.withOpacity(0.8),
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Spacer(),
-                      Container(
-                          padding: EdgeInsets.symmetric(horizontal: 24),
-                          width: width * 0.25,
-                          height: 50,
-                          child: TextField(
-                              decoration: InputDecoration(
-                            hintText: 'Recherche',
-                            prefixIcon: Icon(Icons.search, color: Colors.teal),
-                            fillColor: Colors.blueGrey[50],
-                            filled: true,
-                            labelStyle: TextStyle(fontSize: 12),
-                            contentPadding: EdgeInsets.only(left: 30),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide:
-                                    BorderSide(color: Colors.blueGrey.shade50)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide:
-                                    BorderSide(color: Colors.blueGrey.shade50)),
-                          ))),
-                    ],
+              decoration: BoxDecoration(color: Colors.teal[600]),
+            ),
+            ListTile(
+              leading: Icon(Icons.place_outlined),
+              title: Text(translate('carte', appController.lang)),
+              onTap: () {
+                // appController.logout();
+                Get.toNamed('/carte');
+              },
+            ),
+            Divider(
+              height: 2.0,
+            ),
+            ListTile(
+              leading: Icon(Icons.logout_outlined),
+              title: Text(translate('deconnexion', appController.lang)),
+              onTap: () {
+                appController.logout();
+              },
+            ),
+            Divider(
+              height: 2.0,
+            ),
+          ],
+        ) // Populate the Drawer in the next step.
+            ),
+        body: ListView(children: [
+          SizedBox(),
+          SingleChildScrollView(
+            child: Container(
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
                   ),
-                if (isMobile(context))
-                  Column(
-                    children: [
-                      Text(
-                        "Find Your \nConsultation",
-                        style: TextStyle(
-                            color: Colors.black87.withOpacity(0.8),
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          /*width: width * 0.75, */
-                          height: 50,
-                          child: TextField(
-                              decoration: InputDecoration(
-                            hintText: 'Recherche',
-                            prefixIcon: Icon(Icons.search, color: Colors.teal),
-                            fillColor: Colors.blueGrey[50],
-                            filled: true,
-                            labelStyle: TextStyle(fontSize: 12),
-                            contentPadding: EdgeInsets.only(left: 30),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide:
-                                    BorderSide(color: Colors.blueGrey.shade50)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide:
-                                    BorderSide(color: Colors.blueGrey.shade50)),
-                          ))),
-                    ],
+                  if (!isMobile(context))
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/img/logof.png',
+                          width: Get.width * .2,
+                          height: Get.height * .2,
+                        ),
+                        Spacer(),
+                        Container(
+                            padding: EdgeInsets.symmetric(horizontal: 24),
+                            width: width * 0.3,
+                            height: 50,
+                            child: TextField(
+                                onChanged: (text) {
+                                  print('First text field: $text');
+                                },
+                                controller: appController.queryController,
+                                decoration: InputDecoration(
+                                  hintText: 'Recherche',
+                                  prefixIcon:
+                                      Icon(Icons.search, color: Colors.teal),
+                                  fillColor: Colors.blueGrey[50],
+                                  filled: true,
+                                  labelStyle: TextStyle(fontSize: 12),
+                                  contentPadding: EdgeInsets.only(left: 30),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueGrey.shade50)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueGrey.shade50)),
+                                ))),
+                      ],
+                    ),
+                  if (isMobile(context))
+                    Column(
+                      children: [
+                        Image.asset(
+                          'assets/img/logof.png',
+                          width: Get.width * .35,
+                          height: Get.height * .1,
+                        ),
+                        Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            /*width: width * 0.75, */
+                            height: 50,
+                            child: TextField(
+                                onChanged: (text) {
+                                  appController.search(text);
+                                },
+                                controller: appController.queryController,
+                                decoration: InputDecoration(
+                                  hintText: 'Recherche',
+                                  prefixIcon:
+                                      Icon(Icons.search, color: Colors.teal),
+                                  fillColor: Colors.blueGrey[50],
+                                  filled: true,
+                                  labelStyle: TextStyle(fontSize: 12),
+                                  contentPadding: EdgeInsets.only(left: 30),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueGrey.shade50)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueGrey.shade50)),
+                                ))),
+                      ],
+                    ),
+                  SizedBox(
+                    height: 30,
                   ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Categories",
-                  style: TextStyle(
-                      color: Colors.black87.withOpacity(0.8),
-                      fontSize: 25,
-                      fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 30,
-                  child: ListView.builder(
-                      itemCount: categories.length,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return CategorieTile(
-                          categorie: categories[index],
-                          isSelected: selectedCategorie == categories[index],
-                          context: this,
-                          key: null,
-                        );
-                      }),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Container(
-                    margin: EdgeInsets.only(left: width * .05),
-                    height: height * .4,
-                    child: OrientationBuilder(
-                      builder: (context, orientation) {
-                        return GridView.count(
-                          // Create a grid with 2 columns in portrait mode, or 3 columns in
-                          // landscape mode.
-                          crossAxisCount:
-                              orientation == Orientation.portrait ? 2 : 5,
-                          // Generate 100 widgets that display their index in the List.
-                          children: List.generate(4, (index) {
-                            return DocWidget(
-                              imgAssetPath: lauteurs[index].imgAssetPath,
-                              speciality: lauteurs[index].speciality,
-                              validite: lauteurs[index].validite,
-                              name: lauteurs[index].name,
+                  Text(
+                    "Categories",
+                    style: TextStyle(
+                        color: Colors.black87.withOpacity(0.8),
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Container(
+                      height: 30,
+                      child: ListView.builder(
+                          itemCount: appController.getCategories().length,
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return CategorieTile(
+                              categorie: appController.getCategories()[index],
+                              isSelected: appController.selectedCategorie ==
+                                  appController.getCategories()[index],
+                              context: this,
+                              key: null,
                             );
                           }),
-                        );
-                      },
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        height: height * .5,
+                        child: OrientationBuilder(
+                          builder: (context, orientation) {
+                            return GridView.count(
+                                // Create a grid with 2 columns in portrait mode, or 3 columns in
+                                // landscape mode.
+                                crossAxisCount: isMobile(context) ? 2 : 4,
+                                // Generate 100 widgets that display their index in the List.
+                                children: [
+                                  for (Contenue contenue
+                                      in appController.getContenues(
+                                          appController.selectedCategorie))
+                                    GestureDetector(
+                                      onTap: () {
+                                        print('test');
+                                      },
+                                      child: Card(
+                                        elevation: 1,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Flexible(
+                                              flex: 2,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: SvgPicture.asset(
+                                                    'assets/img/book.svg',
+                                                    width: width * 0.8,
+                                                    height: height * 0.5),
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Flexible(
+                                                    flex: 1,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 6.0),
+                                                      child: Text(
+                                                        contenue.titre,
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 5),
+                                                  Flexible(
+                                                    flex: 1,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Flexible(
+                                                          flex: 5,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        6.0),
+                                                            child: Text(
+                                                                contenue
+                                                                    .description,
+                                                                maxLines: 2,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        11.5),
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                ]);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }
@@ -508,7 +575,7 @@ class _CategorieTileState extends State<CategorieTile> {
     return GestureDetector(
       onTap: () {
         widget.context.setState(() {
-          selectedCategorie = widget.categorie;
+          appController.selectedCategorie = widget.categorie;
         });
       },
       child: Container(
@@ -654,107 +721,5 @@ class BigCard extends StatelessWidget {
             ),
           ),
         ));
-  }
-}
-
-class CardList extends StatelessWidget {
-  final String imgAssetPath;
-  final String speciality;
-  final bool validite;
-  final String name;
-
-  const CardList(
-      {Key? key,
-      required this.imgAssetPath,
-      required this.speciality,
-      required this.validite,
-      required this.name})
-      : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PubliPage()));
-      },
-      child: Card(
-        elevation: 8.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              height: height * .1,
-              width: width,
-              child: Image(image: AssetImage(imgAssetPath), fit: BoxFit.cover),
-            ),
-            Container(
-                height: height * .03,
-                child: ListTile(
-                  title: Text(name),
-                  subtitle: Text(speciality),
-                )),
-          ],
-          //flex: 8,
-        ),
-      ),
-    );
-  }
-}
-
-class DocWidget extends StatelessWidget {
-  final String imgAssetPath;
-  final String speciality;
-  final bool validite;
-  final String name;
-
-  const DocWidget(
-      {Key? key,
-      required this.imgAssetPath,
-      required this.speciality,
-      required this.validite,
-      required this.name})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PubliPage()));
-      },
-      child: Card(
-          elevation: 8.0,
-          child: Container(
-            height: height * .1,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: ExactAssetImage(imgAssetPath),
-                fit: BoxFit.cover,
-              ),
-            ),
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.teal,
-              ),
-              height: height * .2,
-              width: width * .30,
-              child: Row(
-                children: [
-                  SizedBox(height: height * 0.5),
-                  if (validite)
-                    Icon(Icons.check_circle)
-                  else
-                    Icon(Icons.unpublished),
-                  Text(
-                    speciality,
-                    style:
-                        TextStyle(color: Colors.white, fontSize: width * 0.005),
-                  ),
-                ],
-              ),
-            ),
-          )),
-    );
   }
 }
