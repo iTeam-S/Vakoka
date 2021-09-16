@@ -53,10 +53,12 @@
 #     "category_id": "1"
 # }
 
-# POST http://0.0.0.0:4444/api/v1/get_content/
+# POST http://0.0.0.0:4444/api/v1/comment/
 # content-type: application/json
 
 # {
 #     "user_id": 2,
-#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws"
+#     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzIyOTkzOTcsInN1YiI6Mn0.B4CFRpZBPyFXN7I2nG3eovl0Z2o0MZaKcJmva7WEuws",
+#     "contenu_id": "27",
+#     "text": "C'est enuyant comme document"
 # }

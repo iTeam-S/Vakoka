@@ -1,4 +1,5 @@
 import os
+from re import S
 import jwt
 import time
 import mysql.connector
@@ -94,8 +95,10 @@ def insert_content():
     """
         DESC : Fonction permettant enregistrer un nouveau contenu'
     """
-    data = request.get_json()
-    # data = request.form
+    # data = request.get_json()
+    data = request.form
+
+    print(data)
 
     db = mysql.connector.connect(**database())
     cursor = db.cursor()
@@ -113,7 +116,7 @@ def insert_content():
         'region' : data.get("region")
     }
 
-    category_ids =  data.get("category_ids")
+    category_ids =  data.get("categorie_ids")
     
     # Upload files if exists
     uploaded_files = request.files.getlist("files")
@@ -133,16 +136,15 @@ def insert_content():
     cursor.execute("""
         INSERT INTO Contenu(title, description, text, user_id, files, region) VALUES(%s, %s, %s, %s, %s, %s)
         """,
-        (content['title'], content['description'], content['text'], user_id, file_list[:-1], content['description'])
+        (content['title'], content['description'], content['text'], user_id, file_list[:-1], content['region'])
     )
-
+ 
     # Lancement des requetes
-    for category_id in category_ids:
-        cursor.execute("""
-            INSERT INTO Categorie_contenu(categorie_id, contenu_id) VALUES(%s, %s)
-            """,
-            (category_id, cursor.lastrowid,)
-        )
+    cursor.execute("""
+        INSERT INTO Category_contenu(category_id, contenu_id) VALUES(%s, %s)
+        """,
+        (category_ids, cursor.lastrowid,)
+    )
 
     # Sauvegarde des Transactions et Fermeture.
     db.commit()
@@ -217,83 +219,6 @@ def add_category():
             'cat_name': cat_name
         }), 200
 
-@app.route("/api/v1/get_content_region/", methods=['POST'])
-def get_content_region():
-    """
-        DESC : Fonction permettant de lister les contenus 
-    """
-    data = request.get_json()
-
-    token = data.get("token")
-    user_id = data.get("user_id")
-
-    if verifToken(token).get('sub') != user_id :
-        return {"status" : "Erreur Token"}, 403
-
-    # Initialisation du connecteur
-    db = mysql.connector.connect(**database())
-    cursor = db.cursor()
-
-    region = data.get("region")
-
-    cursor.execute(""" 
-        SELECT title, description, text, files FROM Contenu WHERE region = %s
-        """,
-        (region,)
-    )
-    
-    contenus = cursor.fetchone()
-
-    if contenus is not None:
-        return jsonify({
-            'title' : contenus[0],
-            'description': contenus[1],
-            'text': contenus[2],
-            'files': contenus[3]
-        }), 200
-    else:
-        return jsonify({'status': 'incorrect_pass',}), 403
-
-@app.route("/api/v1/get_content_category/", methods=['POST'])
-def get_content_category():
-    """
-        DESC : Fonction permettant l'authentification d'un utilisateur
-    """
-    data = request.get_json()
-
-    token = data.get("token")
-    user_id = data.get("user_id")
-
-    if verifToken(token).get('sub') != user_id :
-        return {"status" : "Erreur Token"}, 403
-
-    # Initialisation du connecteur
-    db = mysql.connector.connect(**database())
-    cursor = db.cursor()
-
-    category_id = data.get("category_id")
-
-    cursor.execute(""" 
-        SELECT ct.name, cn.title, cn.description, cn.text, cn.files FROM Contenu cn LEFT JOIN Category_contenu cc ON cn.id = cc.contenu_id 
-        LEFT JOIN Category ct ON ct.id = cc.category_id WHERE cc.category_id = %s;
-        """,
-        (category_id,)
-    )
-
-    contenus = cursor.fetchall()
-
-    print(contenus)
-
-    return jsonify({
-        'cat_id' : category_id,
-        'cat_name' : contenus[0][0],
-        'contents':[{
-            'title' : contenu[1],
-            'description': contenu[2],
-            'text': contenu[3],
-            'files': contenu[4]} for contenu in contenus]
-    }), 200
-
 @app.route("/api/v1/get_content/", methods=['POST'])
 def get_content():
     """
@@ -312,25 +237,75 @@ def get_content():
     cursor = db.cursor()
 
     cursor.execute(""" 
-        SELECT cn.id, ct.id, ct.name, cn.title, cn.description, cn.text, cn.files FROM Contenu cn LEFT JOIN Category_contenu cc ON cn.id = cc.contenu_id 
-        LEFT JOIN Category ct ON ct.id = cc.category_id;
+        SELECT ct.id, IFNULL(ct.name, ""), IFNULL(cn.title,""), IFNULL(cn.description,""), IFNULL(cn.text,""), IFNULL(cn.files,""), CONCAT(u.nom," ", u.prenom), cn.badge, IFNULL(cn.region,""), cn.id, u.badge, cn.license FROM Contenu cn 
+        JOIN Category_contenu cc ON cn.id = cc.contenu_id 
+        JOIN Category ct ON ct.id = cc.category_id 
+        JOIN Users u ON u.id = cn.user_id;
         """
     )
 
     contenus = cursor.fetchall()
 
-    print(contenus)
+    categs = list(set([(contenu[0], contenu[1]) for contenu in contenus]))
 
-    return jsonify({
-        contenu[0]:{
-            'cat_id' : contenu[1],
-            'cat_name' : contenu[2],
-            'title' : contenu[3],
-            'description': contenu[4],
-            'text': contenu[5],
-            'files': contenu[6]
-        } for contenu in contenus
-    }), 200
+    last = []
+
+    for categ in categs:
+        categ_content = []
+        for contenu in contenus:
+            if contenu[0] == categ[0]:
+                categ_content = categ_content + [{
+                        'title' : contenu[2],
+                        'description': contenu[3],
+                        'text': contenu[4],
+                        'files': contenu[5],
+                        'nom': contenu[6],
+                        'badge': contenu[7],
+                        'region': contenu[8],
+                        'id': contenu[9],
+                        'user_badge': contenu[10],
+                        'license': contenu[11]
+                    }]
+
+        last = last + [{
+                'cat_id' : categ[0],
+                'cat_name' : categ[1],
+                'contents' : categ_content
+            }
+        ]
+
+    return jsonify(last), 200
+    
+
+@app.route('/api/v1/comment/', methods=['POST'])
+def comment():
+
+    data = request.get_json()
+
+    token = data.get("token")
+    user_id = data.get("user_id")
+
+    if verifToken(token).get('sub') != user_id :
+        return {"status" : "Erreur Token"}, 403
+
+    # Initialisation du connecteur
+    db = mysql.connector.connect(**database())
+    cursor = db.cursor()
+
+    text = data.get("text")
+    contenu_id = data.get("contenu_id")
+
+    # Lancement des requetes
+    cursor.execute(
+        'INSERT INTO Comment(text, user_id, contenu_id) VALUES (%s, %s, %s)',
+        (text, user_id, contenu_id)	
+    )
+
+    # Sauvegarde des Transactions et Fermeture.
+    db.commit()
+    db.close()
+
+    return {"status" : "Commentaire enregistree"}, 201
 
 
 if __name__=="__main__":
