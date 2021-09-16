@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:mybn/controllers/app.dart';
 import 'package:mybn/controllers/upload.dart';
 import 'package:mybn/translation.dart';
-import 'package:mybn/views/doctor_info.dart';
 import 'package:mybn/views/publiPage.dart';
 import 'package:mybn/models/speciality.dart';
 import 'package:mybn/views/responsive.dart';
@@ -670,7 +669,7 @@ class BigCard extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DoctorsInfo()));
+              context, MaterialPageRoute(builder: (context) => PubliPage()));
         },
         child: Container(
           width: 300,
