@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.all(9.0),
-                    child: Image.asset("assets/img/LOGO.png"),
+                    child: Image.asset("assets/img/logof.png"),
                   ),
                   /*Spacer(),
                   if (!isMobile(context)) Container(),

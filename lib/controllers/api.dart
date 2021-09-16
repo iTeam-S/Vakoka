@@ -4,7 +4,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:mybn/controllers/upload.dart';
 
-const String BaseUrl = "192.168.137.1:4444";
+const String BaseUrl = "iteam-s.mg:4443";
 const String BaseUrlProtocol = 'http://' + BaseUrl;
 
 class ApiController extends GetxController {
