@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:mybn/controllers/app.dart';
 import 'package:mybn/controllers/upload.dart';
 import 'package:mybn/translation.dart';
+// ignore: unused_import
 import 'package:mybn/views/publiPage.dart';
 import 'package:mybn/models/speciality.dart';
 import 'package:mybn/views/responsive.dart';
@@ -140,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(90.0)),
                             borderSide: BorderSide.none),
-                        hintText: "Texte",
+                        hintText: translate('Texte', appController.lang),
                         prefixIcon: Icon(Icons.edit, color: Colors.teal),
                       ),
                     )),
@@ -344,11 +345,12 @@ class _HomePageState extends State<HomePage> {
                             height: 50,
                             child: TextField(
                                 onChanged: (text) {
-                                  print('First text field: $text');
+                                  appController.search(text);
                                 },
                                 controller: appController.queryController,
                                 decoration: InputDecoration(
-                                  hintText: 'Recherche',
+                                  hintText: translate(
+                                      'Recherche', appController.lang),
                                   prefixIcon:
                                       Icon(Icons.search, color: Colors.teal),
                                   fillColor: Colors.blueGrey[50],
@@ -384,7 +386,8 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 controller: appController.queryController,
                                 decoration: InputDecoration(
-                                  hintText: 'Recherche',
+                                  hintText: translate(
+                                      'Recherche', appController.lang),
                                   prefixIcon:
                                       Icon(Icons.search, color: Colors.teal),
                                   fillColor: Colors.blueGrey[50],
@@ -406,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                     height: 30,
                   ),
                   Text(
-                    "Categories",
+                    translate('categorie', appController.lang),
                     style: TextStyle(
                         color: Colors.black87.withOpacity(0.8),
                         fontSize: 25,
@@ -593,133 +596,5 @@ class _CategorieTileState extends State<CategorieTile> {
         ),
       ),
     );
-  }
-}
-
-class SpecialistTile extends StatelessWidget {
-  final String imgAssetPath;
-  final String speciality;
-  final int noOfDoctors;
-  final Color backColor;
-  SpecialistTile(
-      {required this.imgAssetPath,
-      required this.speciality,
-      required this.noOfDoctors,
-      required this.backColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PubliPage()));
-        },
-        child: Container(
-          width: 150,
-          height: 300,
-          margin: EdgeInsets.only(right: 16),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: ExactAssetImage(imgAssetPath),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.teal,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0),
-              ),
-            ),
-            height: 50,
-            width: 150,
-            child: Column(
-              children: [
-                Text(
-                  speciality,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                SizedBox(
-                  height: 6,
-                ),
-                Text(
-                  "$noOfDoctors Votes",
-                  style: TextStyle(color: Colors.white, fontSize: 13),
-                ),
-              ],
-            ),
-          ),
-        ));
-  }
-}
-
-class BigCard extends StatelessWidget {
-  final String imgAssetPath;
-  final String speciality;
-  final bool validite;
-  final String name;
-
-  const BigCard(
-      {Key? key,
-      required this.imgAssetPath,
-      required this.speciality,
-      required this.validite,
-      required this.name})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PubliPage()));
-        },
-        child: Container(
-          width: 300,
-          height: 400,
-          margin: EdgeInsets.only(right: 16),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: ExactAssetImage(imgAssetPath),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.teal,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            height: 100,
-            width: 300,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    if (validite)
-                      Icon(Icons.check_circle)
-                    else
-                      Icon(Icons.unpublished),
-                  ],
-                ),
-                SizedBox(
-                  height: 6,
-                ),
-                Text(
-                  speciality,
-                  style: TextStyle(color: Colors.white, fontSize: 13),
-                ),
-              ],
-            ),
-          ),
-        ));
   }
 }
