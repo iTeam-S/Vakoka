@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (BuildContext context) => SimpleDialog(
               title: Text(
-                "Ajout d'un Document",
+                translate("Ajout d'un document", appController.lang),
               ),
               children: [
                 Container(
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(90.0)),
                             borderSide: BorderSide.none),
-                        hintText: "Titre",
+                        hintText: translate('Titre', appController.lang),
                         prefixIcon: Icon(Icons.edit, color: Colors.teal),
                       ),
                     )),
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(90.0)),
                             borderSide: BorderSide.none),
-                        hintText: "Description",
+                        hintText: translate('Description', appController.lang),
                         prefixIcon: Icon(Icons.edit, color: Colors.teal),
                       ),
                     )),
@@ -194,9 +194,15 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(fontSize: 14)),
                       items: [
                         DropdownMenuItem(
-                            child: Text('Catégories'), value: 'Catégories'),
-                        DropdownMenuItem(child: Text('Biby'), value: 'Biby'),
-                        DropdownMenuItem(child: Text('Ody'), value: 'Ody'),
+                            child: Text(
+                                translate('Catégorie', appController.lang)),
+                            value: translate('catégorie', appController.lang)),
+                        DropdownMenuItem(
+                            child: Text(translate('Biby', appController.lang)),
+                            value: translate('Biby', appController.lang)),
+                        DropdownMenuItem(
+                            child: Text(translate('Biby', appController.lang)),
+                            value: translate('Biby', appController.lang)),
                       ],
                       onChanged: (value) {
                         uploadController.categorie = value.toString();
@@ -226,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(90.0)),
                             borderSide: BorderSide.none),
-                        hintText: "Fichier",
+                        hintText: translate('Fichier', appController.lang),
                         prefixIcon:
                             Icon(Icons.file_copy_outlined, color: Colors.teal),
                       ),
@@ -245,8 +251,8 @@ class _HomePageState extends State<HomePage> {
                     controller: _btnController,
                     valueColor: Colors.white,
                     borderRadius: 90,
-                    child:
-                        Text("AJOUTER", style: TextStyle(color: Colors.white)),
+                    child: Text(translate('AJOUTER', appController.lang),
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ],
