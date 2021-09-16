@@ -275,7 +275,7 @@ def get_content():
         ]
 
     return jsonify(last), 200
-    
+
 
 @app.route('/api/v1/comment/', methods=['POST'])
 def comment():
@@ -305,8 +305,114 @@ def comment():
     db.commit()
     db.close()
 
-    return {"status" : "Commentaire enregistree"}, 201
+    return {"status" : "comment_added"}, 201
 
+@app.route('/api/v1/get_comments/', methods=['POST'])
+def get_comments():
+
+    data = request.get_json()
+
+    token = data.get("token")
+    user_id = data.get("user_id")
+
+    if verifToken(token).get('sub') != user_id :
+        return {"status" : "Erreur Token"}, 403
+
+    # Initialisation du connecteur
+    db = mysql.connector.connect(**database())
+    cursor = db.cursor()
+
+    contenu_id = data.get("contenu_id")
+
+    # Lancement des requetes
+    cursor.execute("""
+        SELECT cm.id, cm.text, CONCAT(us.nom, " ", us.prenom), cm.date_comment FROM Comment cm
+        JOIN Users us ON cm.user_id = us.id
+        WHERE contenu_id = %s""",
+        (contenu_id, )
+    )
+
+    # Sauvegarde des Transactions et Fermeture.
+    comments = cursor.fetchall()
+
+    db.close()
+
+    return jsonify({
+            comment[0] : {
+                'text': comment[1],
+                'nom': comment[2],
+                'date_comment': comment[3]
+            } for comment in comments
+        }
+    )
+
+@app.route('/api/v1/add_gallery/', methods=['POST'])
+def add_gallery():
+
+    data = request.form
+
+    token = data.get("token")
+    user_id = data.get("user_id")
+
+    if verifToken(token).get('sub') != user_id :
+        return {"status" : "Erreur Token"}, 403
+
+    # Initialisation du connecteur
+    db = mysql.connector.connect(**database())
+    cursor = db.cursor()
+
+    title = data.get("title")
+    description = data.get("contenu_id")
+
+    image = request.files['file']
+
+    filename = str(time.time()) + secure_filename(image.filename)
+    image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    # Lancement des requetes
+    cursor.execute(
+        'INSERT INTO Gallery(title, description, image) VALUES (%s, %s, %s)',
+        (title, description, filename)	
+    )
+
+    db.commit()
+    db.close()
+
+    return {"status" : "gallery_added"}, 201
+
+@app.route('/api/v1/list_gallery/', methods=['POST'])
+def list_gallery():
+
+    data = request.form
+
+    token = data.get("token")
+    user_id = data.get("user_id")
+
+    if verifToken(token).get('sub') != user_id :
+        return {"status" : "Erreur Token"}, 403
+
+    # Initialisation du connecteur
+    db = mysql.connector.connect(**database())
+    cursor = db.cursor()
+
+    # Lancement des requetes
+    cursor.execute("""
+        SELECT id, title, description, image FROM Gallery
+        """
+    )
+
+    gallery = cursor.fetchall()
+
+    db.commit()
+    db.close()
+
+    return jsonify({
+        gallery[1] : {
+            'title' : gallery[1],
+            'description' : gallery[2],
+            'image' : gallery[3]
+        }
+    }), 201
 
 if __name__=="__main__":
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4444)), debug=True)
