@@ -168,23 +168,58 @@ class AppController extends GetxController {
   }
 
   void init() async {
-    var res = await apiController.getcontent(user.id, user.token);
-    if (res[0]) {
-      data.clear();
-      for (Map cat in res[1]) {
-        List<Contenue> contTmp = <Contenue>[];
-        for (Map cont in cat['contents'])
-          contTmp.add(Contenue(
-              cont['id'],
-              cont['title'],
-              cont['description'],
-              cont['text'],
-              Profile(cont['nom'], cont['user_badge'] == 1 ? true : false),
-              cont['badge'] == 1 ? true : false,
-              cont['files'],
-              cont['region']));
-        Categorie catTmp = Categorie(cat['cat_id'], cat['cat_name'], contTmp);
-        data.add(catTmp);
+    try {
+      var res = await apiController.getcontent(user.id, user.token);
+      if (res[0]) {
+        box.write('data', res[1]);
+        box.save();
+        data.clear();
+        for (Map cat in res[1]) {
+          List<Contenue> contTmp = <Contenue>[];
+          for (Map cont in cat['contents'])
+            contTmp.add(Contenue(
+                cont['id'],
+                cont['title'],
+                cont['description'],
+                cont['text'],
+                Profile(cont['nom'], cont['user_badge'] == 1 ? true : false),
+                cont['badge'] == 1 ? true : false,
+                cont['files'],
+                cont['region']));
+          Categorie catTmp = Categorie(cat['cat_id'], cat['cat_name'], contTmp);
+          data.add(catTmp);
+        }
+      }
+    } catch (err) {
+      if (box.hasData('data')) {
+        var res = box.read('data');
+        Get.snackbar(
+          "Attention",
+          "Vous êtes hors ligne.",
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderWidth: 2,
+          barBlur: 0,
+          duration: Duration(seconds: 5),
+        );
+        for (Map cat in res) {
+          List<Contenue> contTmp = <Contenue>[];
+          for (Map cont in cat['contents'])
+            contTmp.add(Contenue(
+                cont['id'],
+                cont['title'],
+                cont['description'],
+                cont['text'],
+                Profile(cont['nom'], cont['user_badge'] == 1 ? true : false),
+                cont['badge'] == 1 ? true : false,
+                cont['files'],
+                cont['region']));
+          Categorie catTmp = Categorie(cat['cat_id'], cat['cat_name'], contTmp);
+          data.add(catTmp);
+        }
       }
     }
     update();

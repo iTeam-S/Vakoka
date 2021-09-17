@@ -5,6 +5,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mybn/controllers/app.dart';
 import 'package:mybn/models/users.dart';
 import 'package:mybn/views/gallery.dart';
+import 'package:mybn/views/commentaire.dart';
 import 'package:mybn/views/home.dart';
 import 'package:mybn/views/login.dart';
 import 'package:mybn/views/carte.dart';
@@ -50,8 +51,8 @@ class MyApp extends StatelessWidget {
           '/home': (context) => HomePage(),
           '/carte': (context) => CarteView(),
           '/page': (context) => PubliPage(),
-          '/gallery': (context) => Gallery()
-      
+          '/gallery': (context) => Gallery(),
+          '/commentaire': (context) => Commentaire()
         });
   }
 }

@@ -157,6 +157,14 @@ class PubliPage extends StatelessWidget {
         ),
                        ),
                      
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed('/commentaire');
+                          },
+                          child: Text('Espace Commentaire'),
+                        ),
+                      )
                     ],
                   )),
             )/** */
