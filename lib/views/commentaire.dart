@@ -364,7 +364,7 @@ class _Commentaire extends State<Commentaire> {
                               sendComment();*/
                         },
                         icon: Icon(Icons.send),
-                        label: Text("Commenter"),
+                        label: Text(""),
                       )
                     ],
                   )

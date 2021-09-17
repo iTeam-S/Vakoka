@@ -157,7 +157,8 @@ class PubliPage extends StatelessWidget {
         ),
                        ),
                      
-                      Center(
+                      Container(
+                        
                         child: ElevatedButton(
                           onPressed: () {
                             Get.toNamed('/commentaire');

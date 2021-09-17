@@ -302,25 +302,25 @@ class _HomePageState extends State<HomePage> {
               height: 2.0,
             ),
             ListTile(
-              leading: Icon(Icons.logout_outlined),
-              title: Text(translate('deconnexion', appController.lang)),
-              onTap: () {
-                appController.logout();
-              },
-            ),
-            Divider(
-              height: 2.0,
-            ),
-            ListTile(
               leading: Icon(Icons.g_translate_sharp),
               title: Text(translate('Traduire', appController.lang)),
               onTap: () {},
             ),
             ListTile(
               leading: Icon(Icons.collections_outlined),
-              title: Text(translate('Gellery', appController.lang)),
+              title: Text(translate('Musée', appController.lang)),
               onTap: () {
                 Get.toNamed('/gallery');
+              },
+            ),
+            Divider(
+              height: 2.0,
+            ),
+            ListTile(
+              leading: Icon(Icons.logout_outlined),
+              title: Text(translate('deconnexion', appController.lang)),
+              onTap: () {
+                appController.logout();
               },
             ),
           ],

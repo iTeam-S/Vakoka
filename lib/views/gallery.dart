@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:mybn/models/contenue.dart';
+import 'package:mybn/views/home.dart';
+import 'package:mybn/views/responsive.dart';
 
 late double width, height;
 class Gallery extends StatelessWidget {
@@ -20,38 +23,64 @@ const Gallery({ Key? key }) : super(key: key);
         ),
         title: Text("Musée"),
       ),
-      body: GridView.count(
-          crossAxisCount: 3,
-          crossAxisSpacing: 10.0,
-          mainAxisSpacing: 10.0,
-          
-          children: List.generate(10, (index) {
-              return  Container(
-                  height: height *.03,
-                  width: height*.02,
-      child: Card(
-                                              elevation: 8,
+      body: 
+        Center(
+                          child: SingleChildScrollView(
+                            child: Container(
+                              height: height * .85,
+                              child: OrientationBuilder(
+                                builder: (context, orientation) {
+                                  return GridView.count(
+                                      // Create a grid with 2 columns in portrait mode, or 3 columns in
+                                      // landscape mode.
+                                      crossAxisCount: isMobile(context) ? 2 : 4,
+                                      // Generate 100 widgets that display their index in the List.
+                                      children: [
+                                        // ignore: unused_local_variable
+                                        for (Contenue contenue in appController
+                                            .getContenues(appController
+                                                .selectedCategorie))
+                                          GestureDetector(
+                                            onTap: () {
+                                              
+                                            },
+                                            child: Card(
+                                              elevation: 1,
                                               child: Column(
-                                                   children: [
-                                                     
-                                                    /*child: Padding(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Flexible(
+                                                    flex: 2,
+                                                    child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
-                                                              8.0),*/
-                                                      Image.asset(
+                                                              1.0),
+                                                      child: Image.asset(
                                                           'assets/img/gidro.jpg',
-                                                          width: width * 0.05,
-                                                          height: height * 0.05,
-                                                          fit:BoxFit.cover,
-                                                          ),
-                                                    
-                                                  
+                                                          width: width * 0.95,
+                                                          height: height * 0.5,
+                                                          fit:BoxFit.fill),
+                                                    ),
+                                                  ),
                                                   SizedBox(height: 10),
-                                                
-                                                    
-                                                           
-                                                             Text(
-                                                              "Voninkiazo",
+                                                  Flexible(
+                                                    flex: 2,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Flexible(
+                                                          flex: 1,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        6.0),
+                                                            child: Text(
+                                                              "Gidro fotsy",
                                                               style: TextStyle(
                                                                 fontSize: 13,
                                                                 fontWeight:
@@ -63,20 +92,53 @@ const Gallery({ Key? key }) : super(key: key);
                                                                   TextOverflow
                                                                       .ellipsis,
                                                             ),
-                                                          
-                                                        
-                                                        
-                                                   ],
-                                                 )
-                                                    
-                                                    )
-                                                  );
-                                       
-    
-              
-            },),
-        )
-    );
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 5),
+                                                        Flexible(
+                                                          flex: 1,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Flexible(
+                                                                flex: 5,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          6.0),
+                                                                  child: Text(
+                                                                      "Biby an'ala, ary efa ho lanitaminana",
+                                                                      maxLines:
+                                                                          2,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              11.5),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .fade),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                      ]);
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+        );
+  
   }
 }
 
