@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mybn/controllers/app.dart';
+import 'package:mybn/views/responsive.dart';
 
 late double width, height;
 final AppController appController = Get.put(AppController());
@@ -60,7 +61,7 @@ class PubliPage extends StatelessWidget {
                           right: 30,
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                                 height: height * .04,
@@ -95,7 +96,10 @@ class PubliPage extends StatelessWidget {
                                   children: [
                                     if (appController.currentContenue.files !=
                                         '')
-                                      IconButton(
+                                    (!isMobile(context))?Container(
+                                        child:Row(
+                                          children: [
+                                            IconButton(
                                           onPressed: () {},
                                           icon: Icon(
                                             Icons.download_for_offline,
@@ -106,6 +110,12 @@ class PubliPage extends StatelessWidget {
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.teal))
+                                          ],
+                                        )
+                                      ) :Icon(
+                                            Icons.download_for_offline,
+                                            color: Colors.teal,
+                                          )
                                   ]),
                             )
                           ],
@@ -138,13 +148,18 @@ class PubliPage extends StatelessWidget {
                       SizedBox(height: height * .03),
                       Divider(height: 5),
                       SizedBox(height: height * .03),
-                      Container(
-                        width: width * .7,
-                        child: Row(children: []),
-                      )
+                     Container(
+                       child: Column(
+                        children: [
+                         
+                        ],
+                        
+        ),
+                       ),
+                     
                     ],
                   )),
-            )
+            )/** */
           ],
         ),
       ),

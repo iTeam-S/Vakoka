@@ -38,6 +38,7 @@ dependencies:
   city_picker_from_map: ^0.0.1
   shimmer: ^2.0.0
   shimmer_animation: ^2.1.0+1
+  flutter_text_to_speech: ^3.0.7
 
 
 dev_dependencies:

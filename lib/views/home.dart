@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                         addDocument(context);
                       },
                     )),
-                Container(
+                /*Container(
                     color: Colors.teal[60],
                     height: MediaQuery.of(context).size.height * 0.06,
                     width: MediaQuery.of(context).size.height * 0.5,
@@ -193,14 +193,12 @@ class _HomePageState extends State<HomePage> {
                       items: [
                         DropdownMenuItem(
                             child: Text(
-                                translate('Categorie', appController.lang)),
-                            value: translate('Categorie', appController.lang)),
+                                translate('categorie', appController.lang)),
+                            value: 'categorie'),
                         DropdownMenuItem(
-                            child: Text(translate('Biby', appController.lang)),
-                            value: translate('Biby', appController.lang)),
-                        DropdownMenuItem(
-                            child: Text(translate('Biby', appController.lang)),
-                            value: translate('Biby', appController.lang)),
+                            child: Text(translate('biby', appController.lang)),
+                            value: 'biby'),
+                        
                       ],
                       onChanged: (value) {
                         uploadController.categorie = value.toString();
@@ -208,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.pop(context);
                         addDocument(context);
                       },
-                    )),
+                    )),*/
                 Container(
                     height: MediaQuery.of(context).size.height * 0.08,
                     margin: EdgeInsets.symmetric(
@@ -266,6 +264,7 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           backgroundColor: Colors.teal,
           elevation: 0.0,
+          // ignore: deprecated_member_use
           brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black87),
         ),
@@ -318,9 +317,11 @@ class _HomePageState extends State<HomePage> {
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.photo_camera),
-              title: Text(translate('capture', appController.lang)),
-              onTap: () {},
+              leading: Icon(Icons.collections_outlined),
+              title: Text(translate('Gellery', appController.lang)),
+              onTap: () {
+                Get.toNamed('/gallery');
+              },
             ),
           ],
         ) // Populate the Drawer in the next step.
